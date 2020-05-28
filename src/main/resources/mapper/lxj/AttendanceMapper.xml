@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.lxj.mapper.AttendanceMapper">
+
+    <insert id="insertAttendance" parameterType="cc.mrbird.febs.lxj.entity.Attendance">
+        INSERT INTO attendance
+        (id, createdTime, address, baseMacAddr, checkTime, corpId, latitude, bizId, locationMethod, deviceName,
+         deviceSN, userId, sourceUserId)
+        VALUES (#{id}, #{createdTime}, #{address}, #{baseMacAddr}, #{checkTime}, #{corpId}, #{latitude}, #{bizId},
+                #{locationMethod}, #{deviceName},
+                #{deviceSN}, #{userId}, #{sourceUserId})
+    </insert>
+
+    <insert id="insertAttendances" parameterType="cc.mrbird.febs.lxj.entity.Attendance">
+        INSERT INTO attendance
+        (id, createdTime, address, baseMacAddr, checkTime, corpId, latitude, bizId, locationMethod, deviceName,
+        deviceSN, userId, sourceUserId)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.createdTime}, #{item.address}, #{item.baseMacAddr}, #{item.checkTime}, #{item.corpId},
+            #{item.latitude}, #{item.bizId}, #{item.locationMethod}, #{item.deviceName},
+            #{item.deviceSN}, #{item.userId}, #{item.sourceUserId})
+        </foreach>
+    </insert>
+
+</mapper>

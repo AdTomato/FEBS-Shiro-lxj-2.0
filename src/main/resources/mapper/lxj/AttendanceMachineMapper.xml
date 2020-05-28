@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.mrbird.febs.lxj.mapper.AttendanceMachineMapper">
+    <!--添加考勤机-->
+    <insert id="addMachine" parameterType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
+        insert into sys_attendance_machine(id, team_info, mac) value(replace(uuid(),'-',''),#{teamInfo},#{mac})
+    </insert>
+    <!--更新考勤机-->
+    <update id="updateMachine" parameterType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
+        update sys_attendance_machine
+        <trim prefix="set" prefixOverrides=",">
+            <if test="teamInfo != null and teamInfo != ''">team_info = #{teamInfo},</if>
+            <if test="mac != null and mac !=''">mac = #{mac}</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <!--删除考勤机-->
+    <delete id="deleteMachine">
+        delete from sys_attendance_machine where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据mac获取考勤机数据-->
+    <select id="getAttendanceMachineByMac" parameterType="java.lang.String"
+            resultType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
+        SELECT *
+        FROM sys_attendance_machine
+        WHERE mac = #{mac}
+    </select>
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.lxj.mapper.PersonalAttendanceMapper">
+
+
+    <!--根据工作时间获取人员每日考勤时长数据-->
+    <select id="getPersonalAttendanceByWorkTime"
+            resultType="cc.mrbird.febs.lxj.entity.PersonalAttendance">
+        SELECT *
+        FROM personal_attendance
+        WHERE work_time = #{workTime} and userId = #{userId}
+    </select>
+
+    <!--插入人员每日考勤时长数据-->
+    <insert id="insertPersonalAttendance" parameterType="cc.mrbird.febs.lxj.entity.PersonalAttendance">
+        INSERT INTO personal_attendance
+        (id, userId, departmentId, work_time, duration)
+        VALUE
+        (#{id}, #{userId}, #{departmentId}, #{workTime}, #{duration})
+
+       <!-- <foreach collection="list" item="item" index="index">
+            (#{id}, #{userId}, #{departmentId}, #{workTime}, #{duration})
+        </foreach>-->
+    </insert>
+
+</mapper>

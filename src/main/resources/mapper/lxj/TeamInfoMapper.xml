@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.lxj.mapper.TeamInfoMapper">
+    <!--插入班组信息-->
+    <insert id="addTeamInfo" parameterType="cc.mrbird.febs.lxj.entity.TeamInfo">
+        insert into
+            sys_team_info (id, name, punch_time, flexible_work_time)
+        VALUE
+            (replace(uuid(), '-', ''), #{name}, #{punchTime}, #{flexibleWorkTime})
+    </insert>
+    <!--更新班组信息-->
+    <update id="updateTeam" parameterType="cc.mrbird.febs.lxj.entity.TeamInfo">
+        update
+        sys_team_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null and name != ''">name = #{name},</if>
+            <if test="punchTime != null">punch_time = #{punchTime},</if>
+            <if test="flexibleWorkTime != null">flexible_work_time =#{flexibleWorkTime}</if>
+        </trim>
+        <trim prefix="where">
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </trim>
+
+    </update>
+    <!--定时器更新每日班组信息的班组打卡时间的天-->
+    <update id="updateTeamPunchTime" parameterType="cc.mrbird.febs.lxj.entity.TeamInfo">
+        update sys_team_info
+        <trim prefix="set">
+           <foreach collection="list" item="item" index="index">
+               punch_time = #{item.punchTime}
+           </foreach>
+           where id in
+           <foreach collection="list" open="(" close=")" separator="," index="index" item="item">
+               #{item.id}
+           </foreach>
+        </trim>
+    </update>
+    <!--删除班组信息-->
+    <delete id="deleteTeam" parameterType="list">
+        delete from sys_team_info where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </delete>
+
+    <!--根据考勤班组id获取考勤班组信息-->
+    <select id="getTeamInfoById" parameterType="java.lang.String" resultType="cc.mrbird.febs.lxj.entity.TeamInfo">
+        SELECT * FROM sys_team_info WHERE id = #{id}
+    </select>
+    <select id="getAllTeamInfo" resultType="cc.mrbird.febs.lxj.entity.TeamInfo">
+        select * from sys_team_info
+    </select>
+
+</mapper>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.mrbird.febs.lxj.mapper.UserMapper">
+
+    <!--批量插入人员数据-->
+    <insert id="insertUsers" parameterType="cc.mrbird.febs.lxj.entity.OrgUser">
+        INSERT INTO
+        org_user(id, unionid, sourceId, sourceDepartmentId, departmentId, sortKey, mobile, tel, workPlace, isAdmin,
+        isBoss, isHide, isLeader, `name`, active, position, email, orgEmail, avatar, jobnumber, hiredDate, stateCode,
+        isShow)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.unionid}, #{item.sourceId}, #{item.sourceDepartmentId}, #{item.departmentId},
+            #{item.sortKey}, #{item.mobile}, #{item.tel}, #{item.workPlace}, #{item.isAdmin}, #{item.isBoss},
+            #{item.isHide}, #{item.isLeader}, #{item.name}, #{item.active}, #{item.position}, #{item.email},
+            #{item.orgEmail}, #{item.avatar}, #{item.jobnumber}, #{item.hiredDate}, #{item.stateCode}, #{item.isShow})
+        </foreach>
+    </insert>
+
+    <!--单个插入人员数据-->
+    <insert id="insertUser" parameterType="cc.mrbird.febs.lxj.entity.OrgUser">
+        INSERT INTO org_user(id, unionid, sourceId, sourceDepartmentId, departmentId, sortKey, mobile, tel, workPlace,
+                             isAdmin, isBoss, isHide, isLeader, `name`, active, position, email, orgEmail, avatar,
+                             jobnumber, hiredDate, stateCode, isShow)
+        VALUES (#{id}, #{unionid}, #{sourceId}, #{sourceDepartmentId}, #{departmentId}, #{sortKey}, #{mobile}, #{tel},
+                #{workPlace}, #{isAdmin}, #{isBoss}, #{isHide}, #{isLeader}, #{name}, #{active}, #{position}, #{email},
+                #{orgEmail}, #{avatar}, #{jobnumber}, #{hiredDate}, #{stateCode}, #{isShow})
+    </insert>
+
+    <!--批量更新人员数据-->
+    <update id="updateUsers" parameterType="cc.mrbird.febs.lxj.entity.OrgUser">
+        UPDATE org_user
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="unionid = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.unionid != null">
+                        WHEN id = #{item.id} THEN #{item.unionid}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sourceId = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.sourceId != null">
+                        WHEN id = #{item.id} THEN #{item.sourceId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sourceDepartmentId = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.sourceDepartmentId">
+                        WHEN id = #{item.id} THEN #{item.sourceDepartmentId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="departmentId = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.departmentId != null">
+                        WHEN id = #{item.id} THEN #{item.departmentId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sortKey = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.sortKey != null">
+                        WHEN id = #{item.id} THEN #{item.sortKey}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="mobile = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.mobile != null">
+                        WHEN id = #{item.id} THEN #{item.mobile}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tel = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.tel != null">
+                        WHEN id = #{item.id} THEN #{item.tel}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="workPlace = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.workPlace != null">
+                        WHEN id = #{item.id} THEN #{item.workPlace}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="isAdmin = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.isAdmin">
+                        WHEN id = #{item.id} THEN #{item.isAdmin}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="isBoss = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.isBoss">
+                        WHEN id = #{item.id} THEN #{item.isBoss}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="isHide = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.isHide != null">
+                        WHEN id = #{item.id} THEN #{item.isHide}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="isLeader = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.isLeader != null">
+                        WHEN id = #{item.id} THEN #{item.isLeader}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="name = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.name != null">
+                        WHEN id = #{item.id} THEN #{item.name}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="active = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.active != null">
+                        WHEN id = #{item.id} THEN #{item.active}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="position = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.position != null">
+                        WHEN id = #{item.id} THEN #{item.position}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="email = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.email != null">
+                        WHEN id = #{item.id} THEN #{item.email}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="orgEmail = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.orgEmail != null">
+                        WHEN id = #{item.id} THEN #{item.orgEmail}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="avatar = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.avatar != null">
+                        WHEN id = #{item.id} THEN #{item.avatar}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="jobnumber = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.jobnumber != null">
+                        WHEN id = #{item.id} THEN #{item.jobnumber}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="hiredDate = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.hiredDate != null">
+                        WHEN id = #{item.id} THEN #{item.hiredDate}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stateCode = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.stateCode != null">
+                        WHEN id = #{item.id} THEN #{item.stateCode}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="isShow = case" suffix="end">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.isShow != null">
+                        WHEN id = #{item.id} THEN #{item.isShow}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        WHERE
+        id IN (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </update>
+
+    <!--单个更新人员数据-->
+    <update id="updateUser" parameterType="cc.mrbird.febs.lxj.entity.OrgUser">
+        UPDATE org_user
+        SET unionid            = #{unionid},
+            sourceId           = #{sourceId},
+            sourceDepartmentId = #{sourceDepartmentId},
+            departmentId       = #{departmentId},
+            sortKey            = #{sortKey},
+            mobile             = #{mobile},
+            tel                = #{tel},
+            workPlace          = #{workPlace},
+            isAdmin            = #{isAdmin},
+            isBoss             = #{isBoss},
+            isHide             = #{isHide},
+            isLeader           = #{isLeader},
+            `name`             = #{name},
+            active             = #{active},
+            position           = #{position},
+            email              = #{email},
+            orgEmail           = #{orgEmail},
+            avatar             = #{avatar},
+            jobnumber          = #{jobnumber},
+            hiredDate          = #{hiredDate},
+            stateCode          = #{stateCode},
+            isShow             = #{isShow}
+        WHERE id = #{id}
+    </update>
+
+    <!--根据钉钉员工id获取系统员工id-->
+    <select id="getIdBySourceId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT id
+        FROM org_user
+        WHERE sourceId = #{sourceId}
+    </select>
+    <select id="getDeptId" resultType="java.lang.String">
+        select departmentId from org_user_department where userId = #{userId} limit 1
+    </select>
+
+</mapper>

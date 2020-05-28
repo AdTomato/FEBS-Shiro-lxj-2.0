@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.lxj.mapper.PersonalAttendanceDetailMapper">
+
+    <!--根据考勤时长数据id获取考勤时长明细数据-->
+
+    <select id="getPersonalAttendancesDetailByPersonalAttendanceId" parameterType="java.lang.String"
+            resultType="cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail">
+        SELECT *
+        FROM personal_attendance_detail
+        WHERE personal_attendance_id = #{personalAttendanceId}
+        ORDER BY created_time DESC
+    </select>
+
+    <!--根据考勤时长数据id获取考勤时长明细数据-->
+    <select id="getPersonalAttendanceDetailByPersonalAttendanceId"
+            resultType="cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail">
+        SELECT *
+        FROM personal_attendance_detail
+        WHERE personal_attendance_id = #{personalAttendanceId}
+        ORDER BY created_time DESC
+        LIMIT 0, 1
+    </select>
+    <select id="getFirstPersonalAttendanceDetailByPersonalAttendanceId"  resultType="cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail">
+        SELECT *
+        FROM personal_attendance_detail
+        WHERE personal_attendance_id = #{personalAttendanceId}
+        ORDER BY start_time
+        LIMIT 0, 1
+    </select>
+
+    <!--插入人员每日考勤时长明细数据-->
+    <insert id="insertPersonalAttendanceDetail"
+            parameterType="cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail">
+        INSERT INTO personal_attendance_detail
+        (id, created_time,personal_attendance_id, team_id, start_time, end_time, duration, status)
+            VALUE
+            (#{id}, #{createdTime},#{personalAttendanceId}, #{teamId}, #{startTime}, #{endTime}, #{duration}, #{status})
+    </insert>
+
+    <!--单个更新人员每日考勤明细-->
+    <update id="updatePersonalAttendanceDetail"
+            parameterType="cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail">
+        UPDATE personal_attendance_detail
+        SET end_time = #{endTime},
+            duration = #{duration},
+            status   = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <!--批量更新人员每日考勤明细-->
+    <update id="updatePersonalAttendanceDetails"
+            parameterType="cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail">
+        UPDATE personal_attendance_detail
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="end_time = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.endTime != null">
+                        WHEN id = #{item.id} THEN #{item.endTime}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="duration = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.duration != null">
+                        WHEN id = #{item.id} THEN #{item.duration}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="status = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.status != null">
+                        WHEN id = #{item.id} THEN #{item.status}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        WHERE
+        id IN(
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </update>
+
+</mapper>

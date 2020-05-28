@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.lxj.mapper.UserDepartmentMapper">
+
+    <!--批量插入人员部门对应表-->
+    <insert id="insertUserDepartments" parameterType="cc.mrbird.febs.lxj.entity.OrgUserDepartment">
+        INSERT INTO
+        org_user_department(id, sourceId, sourceDepartmentId, userId, departmentId, isShow)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.sourceId}, #{item.sourceDepartmentId}, #{item.userId}, #{item.departmentId},
+            #{item.isShow})
+        </foreach>
+    </insert>
+
+    <!--单个插入人员部门对应表-->
+    <insert id="insertUserDepartment" parameterType="cc.mrbird.febs.lxj.entity.OrgUserDepartment">
+        INSERT INTO org_user_department(id, sourceId, sourceDepartmentId, userId, departmentId, isShow)
+        VALUES (#{id}, #{sourceId}, #{sourceDepartmentId}, #{userId}, #{departmentId}, #{isShow})
+    </insert>
+
+    <!--批量更新人员部门对应表-->
+    <update id="updateUserDepartments" parameterType="cc.mrbird.febs.lxj.entity.OrgUserDepartment">
+        UPDATE org_user_department
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="sourceId = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.sourceId != null">
+                        WHEN id = #{item.id} THEN #{item.sourceId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sourceDepartmentId = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.sourceDepartmentId != null">
+                        WHEN id = #{item.id} THEN #{item.sourceDepartmentId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="userId = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.userId != null">
+                        WHEN id = #{item.id} THEN #{item.userId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="departmentId = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.departmentId != null">
+                        WHEN id = #{item.id} THEN #{item.departmentId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="isShow = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.isShow != null">
+                        WHEN id = #{item.id} THEN #{item.isShow}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        WHERE
+        id IN(
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </update>
+
+    <!--单个更新人员部门对应表-->
+    <update id="updateUserDepartment" parameterType="cc.mrbird.febs.lxj.entity.OrgUserDepartment">
+        UPDATE org_user_department
+        SET sourceId           = #{sourceId},
+            sourceDepartmentId = #{sourceDepartmentId},
+            userId             = #{userId},
+            departmentId       = #{departmentId},
+            isShow             = #{isShow}
+        WHERE id = #{id}
+    </update>
+
+    <!--根据钉钉的员工id和员工部门id，获取系统人员部门对应表id-->
+    <select id="getIdBySuidAndSdid" resultType="java.lang.String">
+        SELECT id
+        FROM org_user_department
+        WHERE sourceId = #{sourceId}
+          AND sourceDepartmentId = #{sourceDepartmentId}
+    </select>
+
+</mapper>
