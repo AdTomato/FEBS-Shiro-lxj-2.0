@@ -31,5 +31,20 @@
         FROM sys_attendance_machine
         WHERE mac = #{mac}
     </select>
+    <select id="getAllMachine" parameterType="attendanceMachine" resultType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
+        select * from sys_attendance_machine where 1=1
+        <if test="attendanceMachine.mac != null and ''!= attendanceMachine.mac ">
+            and mac = #{attendanceMachine.mac}
+        </if>
+    </select>
+    <select id="countMachineNum" parameterType="attendanceMachine" resultType="java.lang.Long">
+        select count (1) from sys_attendance_machine where 1 =1
+        <if test="attendanceMachine.mac !=null and ''!= attendanceMachine.mac ">
+            and mac = #{attendanceMachine.mac}
+        </if>
+    </select>
+    <select id="getMachines" resultType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
+        select * from sys_attendance_machine
+    </select>
 
 </mapper>

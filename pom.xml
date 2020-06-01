@@ -225,6 +225,13 @@
             <artifactId>libpi-oapi-encrpt</artifactId>
             <version>20181107</version>
         </dependency>
+
+        <!--糊涂工具-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.0.12</version>
+        </dependency>
     </dependencies>
 
     <build>

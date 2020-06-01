@@ -2,7 +2,11 @@ package cc.mrbird.febs.lxj.mapper;
 
 
 import cc.mrbird.febs.lxj.entity.TeamInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +15,7 @@ import java.util.List;
  * @time: 2020/4/27 15:48
  * @Description: 考勤班组mapper
  */
+@Repository
 @Mapper
 public interface TeamInfoMapper {
 
@@ -29,7 +34,9 @@ public interface TeamInfoMapper {
 
     void deleteTeam(List<String> ids);
 
-    List<TeamInfo> getAllTeamInfo();
+    IPage<TeamInfo> getAllTeamInfo(@Param("page") Page page, @Param("teamInfo") TeamInfo teamInfo);
 
     void updateTeamPunchTime(List<TeamInfo> teamInfoList);
+
+    long countTeamInfoNum(@Param("teamInfo") TeamInfo teamInfo);
 }

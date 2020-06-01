@@ -2,6 +2,9 @@ package cc.mrbird.febs.lxj.mapper;
 
 
 import cc.mrbird.febs.lxj.entity.AttendanceMachine;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,4 +29,11 @@ public interface AttendanceMachineMapper {
     void updateMachine(AttendanceMachine attendanceMachine);
 
     void deleteMachine(List<String> ids);
+
+    IPage<AttendanceMachine> getAllMachine(Page<AttendanceMachine> page, AttendanceMachine attendanceMachine);
+
+    long countMachineNum(@Param("attendanceMachine") AttendanceMachine attendanceMachine);
+
+    List<AttendanceMachine> getMachines();
+
 }

@@ -52,8 +52,31 @@
     <select id="getTeamInfoById" parameterType="java.lang.String" resultType="cc.mrbird.febs.lxj.entity.TeamInfo">
         SELECT * FROM sys_team_info WHERE id = #{id}
     </select>
-    <select id="getAllTeamInfo" resultType="cc.mrbird.febs.lxj.entity.TeamInfo">
+    <select id="getAllTeamInfo" parameterType="teamInfo" resultType="cc.mrbird.febs.lxj.entity.TeamInfo">
         select * from sys_team_info
+        where 1=1
+        <if test="teamInfo.name !=null and ''!= teamInfo.name">
+            and name = #{teamInfo.name}
+        </if>
+        <if test="teamInfo.punchTime!=null">
+            and punch_time = #{teamInfo.punchTime}
+        </if>
+        <if test="teamInfo.flexibleWorkTime!=null and ''!=teamInfo.flexibleWorkTime">
+            and flexible_work_time =#{teamInfo.flexibleWorkTime}
+        </if>
     </select>
+    <select id="countTeamInfoNum" parameterType="cc.mrbird.febs.lxj.entity.TeamInfo" resultType="java.lang.Long">
+        select count(1) from sys_team_info where 1=1
+        <if test="teamInfo.name !=null and ''!= teamInfo.name">
+            and name = #{teamInfo.name}
+        </if>
+        <if test="teamInfo.punchTime!=null">
+            and punch_time = #{teamInfo.punchTime}
+        </if>
+        <if test="teamInfo.flexibleWorkTime!=null and ''!=teamInfo.flexibleWorkTime">
+            and flexible_work_time =#{teamInfo.flexibleWorkTime}
+        </if>
+    </select>
+
 
 </mapper>

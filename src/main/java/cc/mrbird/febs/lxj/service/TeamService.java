@@ -1,7 +1,9 @@
 package cc.mrbird.febs.lxj.service;
 
 
+import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.lxj.entity.TeamInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public interface TeamService {
 
     void deleteTeam(List<String> ids);
 
-    List<TeamInfo> getAllTeamInfo();
+    IPage<TeamInfo> getAllTeamInfo(TeamInfo teamInfo, QueryRequest request);
 
     void updateTeamPunchTime(List<TeamInfo> teamInfoList);
 }

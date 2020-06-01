@@ -1,7 +1,9 @@
 package cc.mrbird.febs.lxj.service;
 
 
+import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.lxj.entity.AttendanceMachine;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 
@@ -19,4 +21,8 @@ public interface AttendanceMachineService {
     void deleteMachine(List<String> ids);
 
     AttendanceMachine getMachine(String mac);
+
+    IPage<AttendanceMachine> getAllMachine(AttendanceMachine attendanceMachine, QueryRequest request);
+
+    List<AttendanceMachine> getAllMachine();
 }

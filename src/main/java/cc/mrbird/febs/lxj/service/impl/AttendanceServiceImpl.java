@@ -111,7 +111,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             Attendance attendance = getAttendance(dataList);
 
             // 获取考勤机信息
-            AttendanceMachine attendanceMachine = attendanceMachineMapper.getAttendanceMachineByMac(attendance.getBaseMacAddr());
+            AttendanceMachine attendanceMachine = attendanceMachineMapper.getAttendanceMachineByMac(attendance.getBaseMacAddr().replace(":", ""));
 
             // 获取考勤班组信息
             TeamInfo teamInfo = teamInfoMapper.getTeamInfoById(attendanceMachine.getTeamInfo());
@@ -144,7 +144,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendance.setAddress(jsonObject.getString("address"));
 
         // 考勤机打卡的考勤机MAC地址
-        attendance.setBaseMacAddr(jsonObject.getString("baseMacAddr"));
+        attendance.setBaseMacAddr(jsonObject.getString("baseMacAddr").replace(":", ""));
 
         // 打卡时间
         Long checkTime = jsonObject.getLong("checkTime");
@@ -271,7 +271,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                         // 上班前时间打卡
                         // 本次打卡为上一天的下班卡
                         log.info("加班到第二天上班前");
-                        AttendanceMachine attendanceMachine = attendanceMachineMapper.getAttendanceMachineByMac(attendance.getBaseMacAddr());
+                        AttendanceMachine attendanceMachine = attendanceMachineMapper.getAttendanceMachineByMac(attendance.getBaseMacAddr().replace(":", ""));
                         if (attendanceMachine.getTeamInfo().equals(personalAttendanceDetail.getTeamId())) {
                             // 打卡班组相同
                             personalAttendanceDetail.setEndTime(attendance.getCheckTime());
@@ -472,6 +472,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         boolean flag = true;
        //班组打卡时间后打卡
         while (flag) {
+            if (flexibleWorkTime == 0){
+                return  checkCalendar.getTime();
+            }
             calendar.add(Calendar.MINUTE, flexibleWorkTime);
             if (calendar.get(Calendar.HOUR_OF_DAY) == 0 || calendar.get(Calendar.HOUR_OF_DAY) > checkCalendar.get(Calendar.HOUR_OF_DAY) || calendar.get(Calendar.MINUTE) > checkCalendar.get(Calendar.MINUTE)) {
                 calendar.add(Calendar.MINUTE, -flexibleWorkTime);

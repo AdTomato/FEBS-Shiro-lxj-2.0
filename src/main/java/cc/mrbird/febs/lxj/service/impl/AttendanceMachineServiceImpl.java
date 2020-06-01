@@ -1,9 +1,14 @@
 package cc.mrbird.febs.lxj.service.impl;
 
 
+import cc.mrbird.febs.common.entity.FebsConstant;
+import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.lxj.entity.AttendanceMachine;
 import cc.mrbird.febs.lxj.mapper.AttendanceMachineMapper;
 import cc.mrbird.febs.lxj.service.AttendanceMachineService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,5 +43,21 @@ public class AttendanceMachineServiceImpl implements AttendanceMachineService {
     @Override
     public AttendanceMachine getMachine(String mac) {
       return   attendanceMachineMapper.getAttendanceMachineByMac(mac);
+    }
+
+    @Override
+    public IPage<AttendanceMachine> getAllMachine(AttendanceMachine attendanceMachine, QueryRequest request) {
+        Page<AttendanceMachine> page = new Page<>(request.getPageNum(),request.getPageSize());
+        page.setSearchCount(false);
+        page.setTotal(attendanceMachineMapper.countMachineNum(attendanceMachine));
+        SortUtil.handlePageSort(request,page,"mac", FebsConstant.ORDER_ASC,false);
+
+        return attendanceMachineMapper.getAllMachine(page,attendanceMachine);
+
+    }
+
+    @Override
+    public List<AttendanceMachine> getAllMachine() {
+        return attendanceMachineMapper.getMachines();
     }
 }
