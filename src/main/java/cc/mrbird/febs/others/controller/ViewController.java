@@ -96,4 +96,12 @@ public class ViewController {
     public String eximportResult() {
         return FebsUtil.view("others/eximport/eximportResult");
     }
+    /***
+     * 班组管理
+     */
+    @GetMapping("team")
+    @RequiresPermissions("team:view")
+    public String team() {
+        return FebsUtil.view("others/team/team");
+    }
 }

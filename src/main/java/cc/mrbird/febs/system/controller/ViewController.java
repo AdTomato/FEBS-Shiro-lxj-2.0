@@ -5,6 +5,8 @@ import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
+import cc.mrbird.febs.lxj.entity.AttendanceMachine;
+import cc.mrbird.febs.lxj.service.TeamService;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -155,6 +157,21 @@ public class ViewController extends BaseController {
         return FebsUtil.view("error/500");
     }
 
+
+    //    xsheng添加 strat
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/team/detail/{id}")
+    @RequiresPermissions("user:view")
+    public String lxjTeamDetail(@PathVariable String id, Model model) {
+        model.addAttribute("id", id);
+        return FebsUtil.view("others/team/teamDetalis");
+    }
+
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/team/add")
+    @RequiresPermissions("user:view")
+    public String lxjTeamAdd() {
+        return FebsUtil.view("others/team/addTeam");
+    }
+    //    xsheng添加 end
     private void resolveUserModel(String username, Model model, Boolean transform) {
         User user = userService.findByName(username);
         model.addAttribute("user", user);

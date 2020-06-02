@@ -1,0 +1,90 @@
+<div class="layui-fluid layui-anim febs-anim" id="febs-httptrace" lay-title="班组详情">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="httptrace-table-form">
+                        <div class="layui-row">
+                            <div class="layui-col-md11">
+                                <div class="layui-form-item">
+                                </div>
+                            </div>
+                            <div class="layui-col-md1 table-action-area"></div>
+                        </div>
+                    </form>
+                    <span class="febs-alert-base febs-alert-success">共关联到 <strong id="count">0</strong> 个考勤机设备</span>
+                    <table class="layui-table" lay-skin="line">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>mac地址</th>
+                            <th id="id" style="display: none">[[${id}]]</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'table', 'febs', 'form'], function () {
+        var $ = layui.jquery,
+            $view = $('#id'),
+            $query = $view.find('#query'),
+            $reset = $view.find('#reset'),
+            form = layui.form;
+        //调用参数
+        var id=getQueryString("ids");
+        console.log("接收传递的id=",id)
+
+        form.render();
+        initTable($view[0].innerText);
+        $query.on('click', function () {
+        });
+
+        $reset.on('click', function () {
+        });
+
+        function initTable(id) {
+            $.ajax({
+                type: "get",
+                dataType: "json",
+                url: ctx + 'controller/team/searchMachineInTeamInfo?id='+id,
+                data: "",
+                success: function (data) {
+                    if (data.data.length != 0) {
+                        var html = "";
+                        var arr = data.data;
+                        $("#count").html(arr.length);
+                        for(var i=0;i<arr.length;i++){
+                            html += "<tr><td>"+i+"</td><td>"+arr[i].mac+"</td></tr>";
+                        }
+                        $("#tbody").append(html);
+                    }
+                    else {
+                        $("#tbody").append("<tr><td>暂无数据</td></tr>");
+                    }
+                }
+            });
+
+        }
+
+        //获取url传递的参数值
+        function getQueryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+                //return decodeURI(r[2]); //解决中文乱码问题
+            }
+        }
+    });
+</script>

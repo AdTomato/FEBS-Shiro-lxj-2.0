@@ -11,6 +11,8 @@ import cc.mrbird.febs.lxj.service.AttendanceMachineService;
 import cc.mrbird.febs.lxj.service.TeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +64,7 @@ public class TeamController extends BaseController {
      * @return {@link Object}
      **/
     @GetMapping("/searchMachineInTeamInfo")
-    public Object searchTeamInfo(String id) {
+    public Object searchTeamInfo(String id, Model model) {
         if (id == null || "".equals(id)){
             return new Result(false,500,"未传入班组id","");
         }
@@ -75,6 +77,8 @@ public class TeamController extends BaseController {
                 attendancesMachine.add(attendanceMachine);
             }
         }
+        model.addAttribute("attendancesMachine",attendancesMachine);
+        System.out.println("attendancesMachine"+attendancesMachine);
         return new FebsResponse().success().data(attendancesMachine);
     }
 
