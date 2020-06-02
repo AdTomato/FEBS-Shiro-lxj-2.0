@@ -36,4 +36,5 @@ public interface AttendanceMachineMapper {
 
     List<AttendanceMachine> getMachines();
 
+    void addMachines(@Param("macList") List<String> macList, @Param("teamId") String teamId);
 }

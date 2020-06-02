@@ -58,4 +58,9 @@ public class TeamServiceImpl implements TeamService {
     public void updateTeamPunchTime(List<TeamInfo> teamInfoList) {
         teamInfoMapper.updateTeamPunchTime(teamInfoList);
     }
+
+    @Override
+    public String getTeamIdByName(String name) {
+        return teamInfoMapper.getTeamIdByName(name);
+    }
 }

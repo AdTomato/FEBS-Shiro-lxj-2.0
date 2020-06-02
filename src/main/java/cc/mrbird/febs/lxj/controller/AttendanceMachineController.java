@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class AttendanceMachineController extends BaseController {
     private AttendanceMachineService attendanceMachineService;
     /**
      * @author lfh
-     * @Description 返回所有考勤机信息
+     * @Description 返回所有未和班组绑定的考勤机信息
      * @Date 2020/6/2 13:59
      * @throws
      * @param
@@ -37,7 +38,13 @@ public class AttendanceMachineController extends BaseController {
     @GetMapping("/getAllMachines")
     public FebsResponse getAllMachines (){
         List<AttendanceMachine> allMachine = attendanceMachineService.getAllMachine();
-        return new FebsResponse().success().data(allMachine);
+        List<AttendanceMachine> UnboundMachines = new ArrayList<>();
+        for (AttendanceMachine attendanceMachine : allMachine) {
+            if (attendanceMachine.getTeamInfo() == null){
+                UnboundMachines.add(attendanceMachine);
+            }
+        }
+        return new FebsResponse().success().data(UnboundMachines);
     }
     /**
      * @author lfh

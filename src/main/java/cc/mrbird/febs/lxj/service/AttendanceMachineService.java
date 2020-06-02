@@ -25,4 +25,6 @@ public interface AttendanceMachineService {
     IPage<AttendanceMachine> getAllMachine(AttendanceMachine attendanceMachine, QueryRequest request);
 
     List<AttendanceMachine> getAllMachine();
+
+    void addMachines(List<String> macList, String teamId);
 }

@@ -60,4 +60,9 @@ public class AttendanceMachineServiceImpl implements AttendanceMachineService {
     public List<AttendanceMachine> getAllMachine() {
         return attendanceMachineMapper.getMachines();
     }
+
+    @Override
+    public void addMachines(List<String> macList, String name) {
+         attendanceMachineMapper.addMachines(macList, name);
+    }
 }

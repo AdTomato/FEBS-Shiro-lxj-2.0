@@ -25,4 +25,6 @@ public interface TeamService {
     IPage<TeamInfo> getAllTeamInfo(TeamInfo teamInfo, QueryRequest request);
 
     void updateTeamPunchTime(List<TeamInfo> teamInfoList);
+
+    String getTeamIdByName(String name);
 }

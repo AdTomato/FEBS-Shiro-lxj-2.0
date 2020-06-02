@@ -77,6 +77,9 @@
             and flexible_work_time =#{teamInfo.flexibleWorkTime}
         </if>
     </select>
+    <select id="getTeamIdByName" resultType="java.lang.String">
+        select id from sys_team_info where name = #{name}
+    </select>
 
 
 </mapper>

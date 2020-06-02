@@ -39,4 +39,6 @@ public interface TeamInfoMapper {
     void updateTeamPunchTime(List<TeamInfo> teamInfoList);
 
     long countTeamInfoNum(@Param("teamInfo") TeamInfo teamInfo);
+
+    String getTeamIdByName(String name);
 }

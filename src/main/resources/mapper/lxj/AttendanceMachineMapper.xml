@@ -8,6 +8,13 @@
     <insert id="addMachine" parameterType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
         insert into sys_attendance_machine(id, team_info, mac) value(replace(uuid(),'-',''),#{teamInfo},#{mac})
     </insert>
+    <!--添加班组的时批量插入考勤机-->
+    <insert id="addMachines">
+        insert into sys_attendance_machine(id,team_info,mac) values
+        <foreach collection="macList" item="mac" index="index" separator=",">
+            (replace(uuid(),'-',''),#{teamId},#{mac})
+        </foreach>
+    </insert>
     <!--更新考勤机-->
     <update id="updateMachine" parameterType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
         update sys_attendance_machine

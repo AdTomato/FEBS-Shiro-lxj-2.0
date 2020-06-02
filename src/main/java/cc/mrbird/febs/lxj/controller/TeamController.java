@@ -7,15 +7,18 @@ import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.lxj.entity.AttendanceMachine;
 import cc.mrbird.febs.lxj.entity.Result;
 import cc.mrbird.febs.lxj.entity.TeamInfo;
+import cc.mrbird.febs.lxj.params.AddTeamParams;
 import cc.mrbird.febs.lxj.service.AttendanceMachineService;
 import cc.mrbird.febs.lxj.service.TeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -87,16 +90,31 @@ public class TeamController extends BaseController {
      * @Description： 新增班组信息
      * @Date 2020/5/18 14:24
      **/
+    @Transactional
     @PostMapping("/addTeam")
-    public Object addTeam(@Validated @RequestBody TeamInfo teamInfo) {
-        if (teamInfo == null || "".equals(teamInfo.getName())) {
-            return new Result(false, 500, "未传入班组信息", "");
+    public Object addTeam(@RequestBody AddTeamParams addTeamParams) {
+        TeamInfo teamInfo = addTeamParams.getTeamInfo();
+        if (teamInfo == null || "".equals(teamInfo .getName())) {
+            return new FebsResponse().fail().message("未传入班组信息");
         }
         try {
-            teamService.addTeamInfo(teamInfo);
+            String teamId = teamService.getTeamIdByName(teamInfo.getName());
+            if (teamId != null){
+                return new FebsResponse().fail().message("班组名已存在，请重新添加");
+            }
+            teamService.addTeamInfo(addTeamParams.getTeamInfo());
         } catch (Exception e) {
             e.printStackTrace();
-            return new FebsResponse().fail().message("添加失败");
+            return new FebsResponse().fail().message("添加班组信息失败");
+        }
+        if (addTeamParams.getMacs() == null){
+            return new FebsResponse().success();
+        }
+        if (addTeamParams.getMacs().length() > 0) {
+            String[] macArray = addTeamParams.getMacs().split(",");
+            List<String> macList = Arrays.asList(macArray);
+            String teamId = teamService.getTeamIdByName(teamInfo.getName());
+            attendanceMachineService.addMachines(macList,teamId);
         }
 
         return new FebsResponse().success();
@@ -133,8 +151,8 @@ public class TeamController extends BaseController {
      * @Description 删除班组信息 可批量
      * @Date 2020/5/18 15:30
      **/
-    @GetMapping("/deleteTeam")
-    public Object deleteTeam(@RequestBody List<String> ids) {
+    @PostMapping("/deleteTeam")
+    public Object deleteTeam(@RequestParam List<String> ids) {
         if (ids.size() == 0 || ids == null) {
             return new FebsResponse().fail().message("未传入班组信息");
         }
