@@ -2,6 +2,7 @@ package cc.mrbird.febs.lxj.controller;
 
 
 import cc.mrbird.febs.common.controller.BaseController;
+import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.lxj.entity.AttendanceMachine;
@@ -11,6 +12,7 @@ import cc.mrbird.febs.lxj.service.AttendanceMachineService;
 import cc.mrbird.febs.lxj.service.TeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +28,7 @@ import java.util.Map;
  **/
 @RestController
 @Slf4j
-@RequestMapping("/controller/team")
+@RequestMapping("controller/team")
 public class TeamController extends BaseController {
     @Autowired
     private TeamService teamService;
@@ -61,8 +63,8 @@ public class TeamController extends BaseController {
      * @param id 考勤班组id
      * @return {@link Object}
      **/
-    @GetMapping("/searchMachineInTeamInfo")
-    public Object searchTeamInfo(String id) {
+    @GetMapping("/searchMachineInTeamInfo/{id}")
+    public Object searchTeamInfo(@PathVariable String id, Model model) {
         if (id == null || "".equals(id)){
             return new Result(false,500,"未传入班组id","");
         }
@@ -75,6 +77,7 @@ public class TeamController extends BaseController {
                 attendancesMachine.add(attendanceMachine);
             }
         }
+        model.addAttribute("attendancesMachine",attendancesMachine);
         return new FebsResponse().success().data(attendancesMachine);
     }
 
