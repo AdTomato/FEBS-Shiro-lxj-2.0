@@ -26,7 +26,28 @@ import java.util.Map;
 public class AttendanceMachineController extends BaseController {
     @Autowired
     private AttendanceMachineService attendanceMachineService;
-
+    /**
+     * @author lfh
+     * @Description 返回所有考勤机信息
+     * @Date 2020/6/2 13:59
+     * @throws
+     * @param
+     * @return {@link FebsResponse}
+     **/
+    @GetMapping("/getAllMachines")
+    public FebsResponse getAllMachines (){
+        List<AttendanceMachine> allMachine = attendanceMachineService.getAllMachine();
+        return new FebsResponse().success().data(allMachine);
+    }
+    /**
+     * @author lfh
+     * @Description  以表格的形式返回所有考勤机
+     * @Date 2020/6/2 13:52
+     * @throws
+     * @param attendanceMachine
+     * @param request
+     * @return {@link Object}
+     **/
     @GetMapping("/getAllAttendanceMachine")
     public Object getAllAttendanceMachine(AttendanceMachine attendanceMachine, QueryRequest request){
         /*List<AttendanceMachine> allMachine = attendanceMachineService.getAllMachine();
@@ -59,6 +80,11 @@ public class AttendanceMachineController extends BaseController {
         return new FebsResponse().success();
     }
 
+    /**
+     * 修改考勤机信息
+     * @param attendanceMachine
+     * @return
+     */
     @PostMapping("/updateMachine")
     public Object updateMachine(@RequestBody AttendanceMachine attendanceMachine){
         if (attendanceMachine == null || "".equals(attendanceMachine)){
@@ -73,7 +99,14 @@ public class AttendanceMachineController extends BaseController {
 
         return new FebsResponse().success();
     }
-
+    /**
+     * @author lfh
+     * @Description 删除考勤机信息
+     * @Date 2020/6/2 14:00
+     * @throws
+     * @param ids
+     * @return {@link Object}
+     **/
     @PostMapping("/deleteMachine")
     public Object deleteMachine(@RequestBody List<String> ids){
         if (ids.size() == 0 || "".equals(ids)){
@@ -88,6 +121,14 @@ public class AttendanceMachineController extends BaseController {
         }
         return new FebsResponse().success();
     }
+    /**
+     * @author lfh
+     * @Description 通过mac地址查询考勤机
+     * @Date 2020/6/2 14:01
+     * @throws
+     * @param mac
+     * @return {@link Object}
+     **/
     @GetMapping("/getMachine")
     public Object getMachine(String mac){
        AttendanceMachine attendanceMachine =  attendanceMachineService.getMachine(mac);
