@@ -62,8 +62,8 @@ public class TeamController extends BaseController {
      * @param id 考勤班组id
      * @return {@link Object}
      **/
-    @GetMapping("/searchMachineInTeamInfo/{id}")
-    public Object searchTeamInfo(@PathVariable String id, Model model) {
+    @GetMapping("/searchMachineInTeamInfo")
+    public Object searchTeamInfo(String id, Model model) {
         if (id == null || "".equals(id)){
             return new Result(false,500,"未传入班组id","");
         }
