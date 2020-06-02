@@ -40,7 +40,7 @@ public class AttendanceMachineController extends BaseController {
         List<AttendanceMachine> allMachine = attendanceMachineService.getAllMachine();
         List<AttendanceMachine> UnboundMachines = new ArrayList<>();
         for (AttendanceMachine attendanceMachine : allMachine) {
-            if (attendanceMachine.getTeamInfo() == null){
+            if (attendanceMachine.getTeamInfo() == null||"".equals(attendanceMachine.getTeamInfo())){
                 UnboundMachines.add(attendanceMachine);
             }
         }
