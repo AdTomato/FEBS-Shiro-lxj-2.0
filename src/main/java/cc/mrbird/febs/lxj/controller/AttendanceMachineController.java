@@ -62,6 +62,7 @@ public class AttendanceMachineController extends BaseController {
             return new Result(false,500,"没有考勤设备数据","");
         }
         return new Result(true,200,"",allMachine);*/
+
         Map<String, Object> dataTable = getDataTable(attendanceMachineService.getAllMachine(attendanceMachine, request));
         return new FebsResponse().success().data(dataTable);
     }
