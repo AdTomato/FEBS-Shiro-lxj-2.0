@@ -30,8 +30,8 @@ public class AttendanceMachineServiceImpl implements AttendanceMachineService {
     private TeamInfoMapper teamInfoMapper;
 
     @Override
-    public void addMachine(AttendanceMachine attendanceMachine) {
-        attendanceMachineMapper.addMachine(attendanceMachine);
+    public void addMachine(String mac) {
+        attendanceMachineMapper.addMachine(mac);
     }
 
     @Override

@@ -5,8 +5,8 @@
 
 <mapper namespace="cc.mrbird.febs.lxj.mapper.AttendanceMachineMapper">
     <!--添加考勤机-->
-    <insert id="addMachine" parameterType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
-        insert into sys_attendance_machine(id, team_info, mac) value(replace(uuid(),'-',''),#{teamInfo},#{mac})
+    <insert id="addMachine">
+        insert into sys_attendance_machine(id, mac) value(replace(uuid(),'-',''),#{mac})
     </insert>
     <!--添加班组的时批量插入考勤机-->
     <insert id="addMachines">

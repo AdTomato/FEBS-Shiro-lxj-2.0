@@ -24,7 +24,7 @@ public interface AttendanceMachineMapper {
      */
     AttendanceMachine getAttendanceMachineByMac(String mac);
 
-    void addMachine(AttendanceMachine attendanceMachine);
+    void addMachine(String mac);
 
     void updateMachine(AttendanceMachine attendanceMachine);
 

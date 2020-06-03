@@ -14,7 +14,7 @@ import java.util.List;
  * @Description:
  **/
 public interface AttendanceMachineService {
-    void addMachine(AttendanceMachine attendanceMachine);
+    void addMachine(String mac);
 
     void updateMachine(AttendanceMachine attendanceMachine);
 

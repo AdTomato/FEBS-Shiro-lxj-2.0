@@ -75,12 +75,12 @@ public class AttendanceMachineController extends BaseController {
      * @return {@link Object}
      **/
     @PostMapping("/addMachine")
-    public Object addMachine(@Validated @RequestBody AttendanceMachine attendanceMachine){
-        if (attendanceMachine == null || "".equals(attendanceMachine)){
+    public Object addMachine(String mac){
+        if (mac == null || "".equals(mac)){
             return new FebsResponse().fail().message("未传入考勤机信息");
         }
         try {
-            attendanceMachineService.addMachine(attendanceMachine);
+            attendanceMachineService.addMachine(mac);
         } catch (Exception e){
             e.printStackTrace();
             return new FebsResponse().fail().message("插入考勤机信息失败");
