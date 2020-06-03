@@ -27,4 +27,10 @@ public interface AttendanceMachineService {
     List<AttendanceMachine> getAllMachine();
 
     void addMachines(List<String> macList, String teamId);
+
+    List<String> getMachineByTeamId(String id);
+
+    void deleteMachineByMacs(List<String> deletedAttendance);
+
+    void deleteMachineByTeamId(String teamId);
 }

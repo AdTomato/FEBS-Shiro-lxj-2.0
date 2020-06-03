@@ -8,7 +8,7 @@
         insert into
             sys_team_info (id, name, punch_time, flexible_work_time)
         VALUE
-            (replace(uuid(), '-', ''), #{name}, #{punchTime}, #{flexibleWorkTime})
+            (#{id}, #{name}, #{punchTime}, #{flexibleWorkTime})
     </insert>
     <!--更新班组信息-->
     <update id="updateTeam" parameterType="cc.mrbird.febs.lxj.entity.TeamInfo">

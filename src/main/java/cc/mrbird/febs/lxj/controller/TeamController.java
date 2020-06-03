@@ -17,10 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName TeamController
@@ -102,26 +99,31 @@ public class TeamController extends BaseController {
             if (teamId != null){
                 return new FebsResponse().fail().message("班组名已存在，请重新添加");
             }
-            teamService.addTeamInfo(addTeamParams.getTeamInfo());
+            String id = UUID.randomUUID().toString().replace("-", "");
+            teamInfo.setId(id);
+            //创建一条班组信息
+            teamService.addTeamInfo(teamInfo);
+            if (addTeamParams.getMacs() == null){
+                return new FebsResponse().success();
+            }
+            //给班组绑定考勤机设备
+            if (addTeamParams.getMacs().length() > 0) {
+                String[] macArray = addTeamParams.getMacs().split(",");
+                List<String> macList = Arrays.asList(macArray);
+
+                attendanceMachineService.addMachines(macList,id);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return new FebsResponse().fail().message("添加班组信息失败");
         }
-        if (addTeamParams.getMacs() == null){
-            return new FebsResponse().success();
-        }
-        if (addTeamParams.getMacs().length() > 0) {
-            String[] macArray = addTeamParams.getMacs().split(",");
-            List<String> macList = Arrays.asList(macArray);
-            String teamId = teamService.getTeamIdByName(teamInfo.getName());
-            attendanceMachineService.addMachines(macList,teamId);
-        }
+
 
         return new FebsResponse().success();
     }
 
     /**
-     * @param teamInfo 班组信息
+     * @param addTeamParams 班组信息 考勤机macs
      * @return {@link Object}
      * @throws
      * @author lfh
@@ -129,12 +131,20 @@ public class TeamController extends BaseController {
      * @Date 2020/5/18 15:30
      **/
     @PostMapping("/updateTeam")
-    public Object updateTeam(@RequestBody TeamInfo teamInfo) {
+    public Object updateTeam(@RequestBody AddTeamParams addTeamParams) {
+        TeamInfo teamInfo = addTeamParams.getTeamInfo();
         if (teamInfo == null) {
             return new Result(false, 500, "未传入班组信息", "");
         }
         try {
             teamService.updateTeam(teamInfo);
+            String macs = addTeamParams.getMacs();
+            List<String> macList = Arrays.asList(macs.split(","));
+
+            // 根据班组id删除考勤机
+            attendanceMachineService.deleteMachineByTeamId(teamInfo.getId());
+            //绑定考勤机
+            attendanceMachineService.addMachines(macList,teamInfo.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return new FebsResponse().fail().message("修改班组信息失败");

@@ -65,4 +65,19 @@ public class AttendanceMachineServiceImpl implements AttendanceMachineService {
     public void addMachines(List<String> macList, String name) {
          attendanceMachineMapper.addMachines(macList, name);
     }
+
+    @Override
+    public List<String> getMachineByTeamId(String id) {
+        return attendanceMachineMapper.getMachineByTeamId(id);
+    }
+
+    @Override
+    public void deleteMachineByMacs(List<String> deletedAttendance) {
+        attendanceMachineMapper.deleteMachineByMacs(deletedAttendance);
+    }
+
+    @Override
+    public void deleteMachineByTeamId(String teamId) {
+        attendanceMachineMapper.deleteMachineByTeamId(teamId);
+    }
 }

@@ -31,6 +31,15 @@
             #{id}
         </foreach>
     </delete>
+    <delete id="deleteMachineByMacs">
+        delete from sys_attendance_machine where mac in
+        <foreach collection="list" item="mac" open="(" close=")" separator=",">
+            #{mac}
+        </foreach>
+    </delete>
+    <delete id="deleteMachineByTeamId">
+        delete from sys_attendance_machine where team_info = #{teamId}
+    </delete>
     <!--根据mac获取考勤机数据-->
     <select id="getAttendanceMachineByMac" parameterType="java.lang.String"
             resultType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
@@ -52,6 +61,9 @@
     </select>
     <select id="getMachines" resultType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
         select * from sys_attendance_machine
+    </select>
+    <select id="getMachineByTeamId" resultType="string">
+        select mac from sys_attendance_machine where teamInfo = #{id}
     </select>
 
 </mapper>
