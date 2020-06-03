@@ -116,7 +116,7 @@ public class AttendanceMachineController extends BaseController {
      * @return {@link Object}
      **/
     @PostMapping("/deleteMachine")
-    public Object deleteMachine(@RequestBody List<String> ids){
+    public Object deleteMachine(@RequestParam List<String> ids){
         if (ids.size() == 0 || "".equals(ids)){
             return new FebsResponse().fail().message("未传入考勤机信息");
         }
