@@ -98,7 +98,7 @@
             r1)
         </if>
         <if test="attendanceDetailParams.checkTime != null">
-            and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
+            and date_format(start_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
         </if>
     </select>
     <select id="getPersonalAttendanceDetailList" resultType="cc.mrbird.febs.lxj.entity.ResultPersonalAttendanceDetail">
@@ -125,7 +125,7 @@
                 and o2.oname like '%${attendanceDetailParams.name}%'
             </if>
             <if test="attendanceDetailParams.checkTime != null">
-                and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
+                and date_format(start_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
             </if>
         </if>
     </select>
