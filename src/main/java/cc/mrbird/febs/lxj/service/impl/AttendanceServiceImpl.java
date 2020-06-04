@@ -23,7 +23,6 @@ import com.dingtalk.api.response.OapiGettokenResponse;
 import com.dingtalk.api.response.OapiUserGetByMobileResponse;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -132,7 +131,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public IPage<ReturnPersonalAttendance> getAttendanceDetailList( AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
+    public IPage<ReturnAttendance> getAttendanceDetailList(AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
         Page<Attendance> page  = new Page<>(request.getPageNum(),request.getPageSize());
         page.setSearchCount(false);
         page.setTotal(attendanceMapper.countAttendanceNum(attendanceDetailParams));
@@ -141,7 +140,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public IPage<PersonalAttendance> getPersonalAttendance(AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
+    public IPage<ReturnPersonalAttendance> getPersonalAttendance(AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
         Page<PersonalAttendance> page  = new Page<>(request.getPageNum(),request.getPageSize());
         page.setSearchCount(false);
         page.setTotal(attendanceMapper.countPersonalAttendanceNum(attendanceDetailParams));

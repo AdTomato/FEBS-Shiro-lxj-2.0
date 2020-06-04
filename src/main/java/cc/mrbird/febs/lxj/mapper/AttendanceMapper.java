@@ -1,10 +1,7 @@
 package cc.mrbird.febs.lxj.mapper;
 
 
-import cc.mrbird.febs.lxj.entity.Attendance;
-import cc.mrbird.febs.lxj.entity.PersonalAttendance;
-import cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail;
-import cc.mrbird.febs.lxj.entity.ReturnPersonalAttendance;
+import cc.mrbird.febs.lxj.entity.*;
 import cc.mrbird.febs.lxj.params.AttendanceDetailParams;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -41,11 +38,11 @@ public interface AttendanceMapper {
 
     long countAttendanceNum(@Param("attendanceDetailParams")AttendanceDetailParams attendanceDetailParams);
 
-    IPage<ReturnPersonalAttendance> getAttendanceDetailList(@Param("page")Page<Attendance> page, @Param("attendanceDetailParams")AttendanceDetailParams attendanceDetailParams);
+    IPage<ReturnAttendance> getAttendanceDetailList(@Param("page")Page<Attendance> page, @Param("attendanceDetailParams")AttendanceDetailParams attendanceDetailParams);
 
     long countPersonalAttendanceNum(@Param("attendanceDetailParams")AttendanceDetailParams attendanceDetailParams);
 
-    IPage<PersonalAttendance> getPersonalAttendanceList(@Param("page") Page<PersonalAttendance> page, @Param("attendanceDetailParams") AttendanceDetailParams attendanceDetailParams);
+    IPage<ReturnPersonalAttendance> getPersonalAttendanceList(@Param("page") Page<PersonalAttendance> page, @Param("attendanceDetailParams") AttendanceDetailParams attendanceDetailParams);
 
     long countPersonalAttendanceDetailNum(@Param("attendanceDetailParams")AttendanceDetailParams attendanceDetailParams);
 

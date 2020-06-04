@@ -1,9 +1,9 @@
 package cc.mrbird.febs.lxj.service;
 
 import cc.mrbird.febs.common.entity.QueryRequest;
-import cc.mrbird.febs.lxj.entity.Attendance;
 import cc.mrbird.febs.lxj.entity.PersonalAttendance;
 import cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail;
+import cc.mrbird.febs.lxj.entity.ReturnAttendance;
 import cc.mrbird.febs.lxj.entity.ReturnPersonalAttendance;
 import cc.mrbird.febs.lxj.params.AttendanceDetailParams;
 import com.alibaba.fastjson.JSONObject;
@@ -35,9 +35,9 @@ public interface AttendanceService {
     void dealWithAttendanceData(JSONObject attendanceData);
 
 
-    IPage<ReturnPersonalAttendance> getAttendanceDetailList(AttendanceDetailParams attendanceDetailParams, QueryRequest request);
+    IPage<ReturnAttendance> getAttendanceDetailList(AttendanceDetailParams attendanceDetailParams, QueryRequest request);
 
-    IPage<PersonalAttendance> getPersonalAttendance(AttendanceDetailParams attendanceDetailParams, QueryRequest request);
+    IPage<ReturnPersonalAttendance> getPersonalAttendance(AttendanceDetailParams attendanceDetailParams, QueryRequest request);
 
     IPage<PersonalAttendanceDetail> getPersonalAttendanceDetail(AttendanceDetailParams attendanceDetailParams, QueryRequest request);
 }

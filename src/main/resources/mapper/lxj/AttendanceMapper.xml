@@ -38,7 +38,7 @@
         </if>
     </select>
     <select id="getAttendanceDetailList" parameterType="cc.mrbird.febs.lxj.params.AttendanceDetailParams"
-            resultType="cc.mrbird.febs.lxj.entity.ReturnPersonalAttendance">
+            resultType="cc.mrbird.febs.lxj.entity.ReturnAttendance">
         select o1.id,o2.oname as name,o1.createdTime,o1.address as address,o1.baseMacAddr,o1.checkTime from
         (select id,createdTime,address,baseMacAddr,checkTime,userId from attendance) as o1
         left join
@@ -56,27 +56,35 @@
     </select>
     <select id="countPersonalAttendanceNum" resultType="java.lang.Long">
         select count(1) from personal_attendance where 1 = 1
-        <if test="attendanceDetailParams.name != null and '' != attendanceDetailParams.name">
-            and userId in (select id from org_user where org_user.name like '%${attendanceDetailParams.name}%')
-        </if>
-        <if test="attendanceDetailParams.checkTime != null">
-            and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
+        <if test="attendanceDetailParams != null">
+            <if test="attendanceDetailParams.name != null and '' != attendanceDetailParams.name">
+                and userId in (select id from org_user where org_user.name like '%${attendanceDetailParams.name}%')
+            </if>
+            <if test="attendanceDetailParams.checkTime != null">
+                and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
+            </if>
         </if>
     </select>
     <!-- select * from personal_attendance as o1
  LEFT JOIN
  (select org_user.name oname,org_user.id oid from org_user) as o2 on o2.oid = o1.userId where 1 = 1 and o2.oname like '%刘%'-->
-    <select id="getPersonalAttendanceList" resultType="cc.mrbird.febs.lxj.entity.PersonalAttendance">
-        (select id,createdTime,mac,checkTime,checkStatus from personal_attendance) as o1
+    <select id="getPersonalAttendanceList" resultType="cc.mrbird.febs.lxj.entity.ReturnPersonalAttendance">
+        select o1.id,o2.oname,o3.deptName dept,o1.work_time as workTime,o1.duration from
+        (select id,userId,departmentId,work_time,duration from personal_attendance) as o1
         left join
         (select org_user.name oname,org_user.id oid from org_user) as o2
+        on o1.userId = o2.oid
+        left join
+        (select id,name as deptName from org_department) as o3
+        on o1.departmentId = o3.id
         where 1 = 1
-        <if test="attendanceDetailParams.name != null and '' != attendanceDetailParams.name">
-            -- and userId in (select id from org_user where org_user.name like '%${attendanceDetailParams.name}%')
-            and o2.name like '%${attendanceDetailParams.name}%'
-        </if>
-        <if test="attendanceDetailParams.checkTime != null">
-            and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
+        <if test="attendanceDetailParams != null">
+            <if test="attendanceDetailParams.name != null and '' != attendanceDetailParams.name">
+                and o2.oname like '%${attendanceDetailParams.name}%'
+            </if>
+            <if test="attendanceDetailParams.checkTime != null">
+                and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
+            </if>
         </if>
     </select>
     <select id="countPersonalAttendanceDetailNum" resultType="java.lang.Long">
