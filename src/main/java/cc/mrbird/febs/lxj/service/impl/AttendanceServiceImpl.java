@@ -1,12 +1,18 @@
 package cc.mrbird.febs.lxj.service.impl;
 
 
+import cc.mrbird.febs.common.entity.FebsConstant;
+import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.lxj.entity.*;
 import cc.mrbird.febs.lxj.mapper.*;
+import cc.mrbird.febs.lxj.params.AttendanceDetailParams;
 import cc.mrbird.febs.lxj.service.AttendanceService;
 import cc.mrbird.febs.lxj.utils.DoubleUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiAttendanceListRecordRequest;
@@ -17,6 +23,7 @@ import com.dingtalk.api.response.OapiGettokenResponse;
 import com.dingtalk.api.response.OapiUserGetByMobileResponse;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -122,6 +129,34 @@ public class AttendanceServiceImpl implements AttendanceService {
             attendanceMapper.insertAttendance(attendance);
             log.info("考勤数据处理完毕");
         }
+    }
+
+    @Override
+    public IPage<ReturnPersonalAttendance> getAttendanceDetailList( AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
+        Page<Attendance> page  = new Page<>(request.getPageNum(),request.getPageSize());
+        page.setSearchCount(false);
+        page.setTotal(attendanceMapper.countAttendanceNum(attendanceDetailParams));
+        SortUtil.handlePageSort(request,page,"name", FebsConstant.ORDER_ASC,false);
+        return attendanceMapper.getAttendanceDetailList(page,attendanceDetailParams);
+    }
+
+    @Override
+    public IPage<PersonalAttendance> getPersonalAttendance(AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
+        Page<PersonalAttendance> page  = new Page<>(request.getPageNum(),request.getPageSize());
+        page.setSearchCount(false);
+        page.setTotal(attendanceMapper.countPersonalAttendanceNum(attendanceDetailParams));
+        SortUtil.handlePageSort(request,page,"work_time", FebsConstant.ORDER_ASC,false);
+        return attendanceMapper.getPersonalAttendanceList(page,attendanceDetailParams);
+
+    }
+
+    @Override
+    public IPage<PersonalAttendanceDetail> getPersonalAttendanceDetail(AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
+        Page<PersonalAttendanceDetail> page  = new Page<>(request.getPageNum(),request.getPageSize());
+        page.setSearchCount(false);
+        page.setTotal(attendanceMapper.countPersonalAttendanceDetailNum(attendanceDetailParams));
+        SortUtil.handlePageSort(request,page,"work_time", FebsConstant.ORDER_ASC,false);
+        return attendanceMapper.getPersonalAttendanceDetailList(page,attendanceDetailParams);
     }
 
     /**
