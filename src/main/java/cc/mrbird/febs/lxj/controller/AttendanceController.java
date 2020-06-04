@@ -77,7 +77,7 @@ public class AttendanceController extends BaseController {
         return new FebsResponse().success().data(dataTable);
     }
     @PostMapping("/personalAttendanceDetail")
-    public FebsResponse personalAttendanceDetail(@RequestBody AttendanceDetailParams attendanceDetailParams, QueryRequest request){
+    public FebsResponse personalAttendanceDetail(@RequestBody(required = false) AttendanceDetailParams attendanceDetailParams, QueryRequest request){
         Map<String,Object> dataTable  = getDataTable(attendanceService.getPersonalAttendanceDetail(attendanceDetailParams,request));
         return new FebsResponse().success().data(dataTable);
     }

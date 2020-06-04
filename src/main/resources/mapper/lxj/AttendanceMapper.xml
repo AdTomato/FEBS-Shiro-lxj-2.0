@@ -90,19 +90,43 @@
     <select id="countPersonalAttendanceDetailNum" resultType="java.lang.Long">
         select count(1) from personal_attendance_detail where 1 = 1
         <if test="attendanceDetailParams.name != null and '' != attendanceDetailParams.name">
-            and userId in (select id from org_user where org_user.name like '%${attendanceDetailParams.name}%')
+           and personal_attendance_id in
+            (select r1.id from
+            (select id from personal_attendance p1 left join
+            (select org_user.name oname,org_user.id oid from org_user ) as o2
+            on p1.userId = o2.oid where o2.oname like '%${attendanceDetailParams.name}%')
+            r1)
         </if>
         <if test="attendanceDetailParams.checkTime != null">
             and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
         </if>
     </select>
-    <select id="getPersonalAttendanceDetailList" resultType="cc.mrbird.febs.lxj.entity.PersonalAttendanceDetail">
-        select * from personal_attendance_detail where 1 = 1
-        <if test="attendanceDetailParams.name != null and '' != attendanceDetailParams.name">
-            and userId in (select id from org_user where org_user.name like '%${attendanceDetailParams.name}%')
-        </if>
-        <if test="attendanceDetailParams.checkTime != null">
-            and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
+    <select id="getPersonalAttendanceDetailList" resultType="cc.mrbird.febs.lxj.entity.ResultPersonalAttendanceDetail">
+        select
+        p1.id,o2.oname as name,o3.deptName dept,s1.teamName as team ,p1.start_time as startTime,p1.end_time as endTime,p1.duration,p1.status
+        from
+        (select id,personal_attendance_id,team_id,start_time,end_time,duration,status from personal_attendance_detail)
+        p1
+        left join
+        (select id,name as teamName from sys_team_info) s1
+        on s1.id = p1.team_id
+        left join
+        (select id,userId,departmentId from personal_attendance) as o1
+        on p1.personal_attendance_id = o1.id
+        left join
+        (select org_user.name oname,org_user.id oid from org_user) as o2
+        on o1.userId = o2.oid
+        left join
+        (select id,name as deptName from org_department) as o3
+        on o1.departmentId = o3.id
+        where 1 = 1
+        <if test="attendanceDetailParams != null">
+            <if test="attendanceDetailParams.name != null and '' != attendanceDetailParams.name">
+                and o2.oname like '%${attendanceDetailParams.name}%'
+            </if>
+            <if test="attendanceDetailParams.checkTime != null">
+                and date_format(work_time,'%Y-%m-%d') = #{attendanceDetailParams.checkTime}
+            </if>
         </if>
     </select>
 

@@ -150,11 +150,11 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public IPage<PersonalAttendanceDetail> getPersonalAttendanceDetail(AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
+    public IPage<ResultPersonalAttendanceDetail> getPersonalAttendanceDetail(AttendanceDetailParams attendanceDetailParams, QueryRequest request) {
         Page<PersonalAttendanceDetail> page  = new Page<>(request.getPageNum(),request.getPageSize());
         page.setSearchCount(false);
         page.setTotal(attendanceMapper.countPersonalAttendanceDetailNum(attendanceDetailParams));
-        SortUtil.handlePageSort(request,page,"work_time", FebsConstant.ORDER_ASC,false);
+        SortUtil.handlePageSort(request,page,"name", FebsConstant.ORDER_ASC,false);
         return attendanceMapper.getPersonalAttendanceDetailList(page,attendanceDetailParams);
     }
 

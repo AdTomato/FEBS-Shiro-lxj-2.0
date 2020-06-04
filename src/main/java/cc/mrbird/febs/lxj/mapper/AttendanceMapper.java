@@ -46,5 +46,5 @@ public interface AttendanceMapper {
 
     long countPersonalAttendanceDetailNum(@Param("attendanceDetailParams")AttendanceDetailParams attendanceDetailParams);
 
-    IPage<PersonalAttendanceDetail> getPersonalAttendanceDetailList(@Param("page") Page<PersonalAttendanceDetail> page, @Param("attendanceDetailParams")AttendanceDetailParams attendanceDetailParams);
+    IPage<ResultPersonalAttendanceDetail> getPersonalAttendanceDetailList(@Param("page") Page<PersonalAttendanceDetail> page, @Param("attendanceDetailParams")AttendanceDetailParams attendanceDetailParams);
 }
