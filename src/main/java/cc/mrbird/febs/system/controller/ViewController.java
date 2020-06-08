@@ -7,6 +7,8 @@ import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.lxj.entity.AttendanceMachine;
 import cc.mrbird.febs.lxj.entity.TeamInfo;
+import cc.mrbird.febs.lxj.service.AttendanceMachineService;
+import cc.mrbird.febs.lxj.service.AttendanceService;
 import cc.mrbird.febs.lxj.service.TeamService;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserService;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author MrBird
@@ -34,6 +37,7 @@ public class ViewController extends BaseController {
     private final IUserService userService;
     private final ShiroHelper shiroHelper;
     private final TeamService teamService;
+    private final AttendanceMachineService attendanceMachineService;
 
     @GetMapping("login")
     @ResponseBody
@@ -198,7 +202,9 @@ public class ViewController extends BaseController {
             throw new Exception("未传入id");
         }
         TeamInfo teamInfo = teamService.getTeamInfoById(id);
+        List<String> machines = attendanceMachineService.getMachineByTeamId(id);
         model.addAttribute("teamInfo",teamInfo);
+        model.addAttribute("machines",machines);
         return FebsUtil.view("others/team/updateTeam");
     }
 }
