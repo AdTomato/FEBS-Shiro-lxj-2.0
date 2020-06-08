@@ -5,7 +5,6 @@ import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
-import cc.mrbird.febs.lxj.entity.AttendanceMachine;
 import cc.mrbird.febs.lxj.entity.TeamInfo;
 import cc.mrbird.febs.lxj.service.AttendanceMachineService;
 import cc.mrbird.febs.lxj.service.TeamService;
@@ -213,16 +212,5 @@ public class ViewController extends BaseController {
         if (user.getLastLoginTime() != null) {
             model.addAttribute("lastLoginTime", DateUtil.getDateFormat(user.getLastLoginTime(), DateUtil.FULL_TIME_SPLIT_PATTERN));
         }
-    }
-
-    @GetMapping("/findTeamInfoById")
-    public String findTeamInfoById(String id,Model model) throws Exception {
-        if (id == null || "".equals(id)){
-            throw new Exception("未传入id");
-        }
-        TeamInfo teamInfo = teamService.getTeamInfoById(id);
-        List<String> machines = attendanceMachineService.getMachineByTeamId(id);
-        model.addAttribute("teamInfo",teamInfo);
-        return FebsUtil.view("others/team/updateTeam");
     }
 }

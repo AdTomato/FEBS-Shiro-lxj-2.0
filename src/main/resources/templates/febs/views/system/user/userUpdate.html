@@ -129,6 +129,7 @@
                 return result;
             },
             success: function () {
+                console.log("user.deptId==",user.roleId)
                 formSelects.value('user-update-role', user.roleId.split(','));
             },
             error: function (id, url, searchVal, err) {
