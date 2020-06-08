@@ -175,4 +175,14 @@ public class TeamController extends BaseController {
         }
         return new FebsResponse().success();
     }
+
+   /* @GetMapping("/findTeamInfoById")
+    public void findTeamInfoById(String id,Model model) throws Exception {
+        if (id == null || "".equals(id)){
+           throw new Exception("未传入id");
+        }
+        TeamInfo teamInfo = teamService.getTeamInfoById(id);
+        model.addAttribute("teamInfo",teamInfo);
+
+    }*/
 }
