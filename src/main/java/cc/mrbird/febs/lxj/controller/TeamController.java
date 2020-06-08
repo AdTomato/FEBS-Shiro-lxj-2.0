@@ -63,24 +63,26 @@ public class TeamController extends BaseController {
      * @return {@link Object}
      **/
     @GetMapping("/searchMachineInTeamInfo")
-    public Object searchTeamInfo(String id, Model model) {
+    public Object searchTeamInfo(String id, Model model,String status) {
         if (id == null || "".equals(id)){
             return new Result(false,500,"未传入班组id","");
         }
         List<AttendanceMachine> attendancesMachine = new ArrayList<>();
         //查询所有的考勤设备信息
         List<AttendanceMachine> machineList = attendanceMachineService.getAllMachine();
-        //遍历考勤设备，将满足条件的考勤机返回
-        for (AttendanceMachine attendanceMachine : machineList) {
-            if (attendanceMachine.getTeamInfo().equals(id)) {
-                attendancesMachine.add(attendanceMachine);
+        if (status.equals("add")) {
+            //遍历考勤设备，将满足条件的考勤机返回
+            for (AttendanceMachine attendanceMachine : machineList) {
+                if (attendanceMachine.getTeamInfo().equals(id)) {
+                    attendancesMachine.add(attendanceMachine);
+                }
             }
         }
         return new FebsResponse().success().data(attendancesMachine);
     }
 
     /**
-     * @param teamInfo 班组信息
+     * @param addTeamParams 班组信息
      * @return {@link Object}
      * @throws
      * @author lfh
