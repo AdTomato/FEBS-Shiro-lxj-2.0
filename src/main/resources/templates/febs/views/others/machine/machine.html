@@ -1,4 +1,4 @@
-<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="班组管理">
+<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="考勤机管理">
     <div class="layui-row febs-container">
         <div class="layui-col-md12">
             <div class="layui-card">
@@ -8,7 +8,7 @@
                             <div class="layui-col-md10">
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
-                                        <label class="layui-form-label layui-form-label-sm">班组名称</label>
+                                        <label class="layui-form-label layui-form-label-sm">mac地址</label>
                                         <div class="layui-input-inline">
                                             <input type="text" name="username" autocomplete="off" class="layui-input">
                                         </div>
@@ -17,13 +17,6 @@
                                         <label class="layui-form-label layui-form-label-sm">创建时间</label>
                                         <div class="layui-input-inline">
                                             <input type="text" name="createTime" id="user-createTime" class="layui-input">
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label layui-form-label-sm">部门</label>
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="dept" id="dept" lay-filter="dept"
-                                                   class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -51,10 +44,6 @@
     <span shiro:lacksPermission="user:view,user:update,user:delete">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
-    <a lay-event="detail"><i
-            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
-    <a lay-event="edit" shiro:hasPermission="user:update"><i
-            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
     <a lay-event="del" shiro:hasPermission="user:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
 <script data-th-inline="none" type="text/javascript">
@@ -90,7 +79,7 @@
             click: function (name, elem, event) {
                 var checkStatus = table.checkStatus('userTable');
                 if (name === 'add') {
-                    febs.modal.open('新增班组', 'system/team/add', {
+                    febs.modal.open('新增考勤机', 'system/machine/add', {
                         btn: ['提交', '重置'],
                         area: $(window).width() <= 750 ? '95%' : '50%',
                         yes: function (index, layero) {
@@ -116,65 +105,24 @@
                         });
                     }
                 }
-                if (name === 'reset') {
-                    if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要重置密码的用户');
-                    } else {
-                        var usernames = [];
-                        layui.each(checkStatus.data, function (key, item) {
-                            usernames.push(item.username)
-                        });
-                        febs.post(ctx + 'user/password/reset/' + usernames.join(','), null, function () {
-                            febs.alert.success('所选用户密码已重置为1234qwer');
-                        });
-                    }
-                }
-                if (name === 'export') {
-                    var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
-                    params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
-                    params.pageNum = $view.find(".layui-laypage-em").next().html();
-                    febs.download(ctx + 'user/excel', params, '用户信息表.xlsx');
-                }
             },
             options: [{
                 name: 'add',
-                title: '新增班组',
+                title: '新增考勤机',
                 perms: 'team:add'
             }, {
                 name: 'delete',
-                title: '删除班组',
+                title: '删除考勤机',
                 perms: 'team:delete'
-            }, {
-                name: 'reset',
-                title: '修改班组',
-                perms: 'team:update'
             }]
         });
 
         table.on('tool(userTable)', function (obj) {
             var data = obj.data,
                 layEvent = obj.event;
-            console.log("id===",data)
-            if (layEvent === 'detail') {
-                febs.modal.view('班组详情', 'system/team/detail/' + data.id, {
-                    area: $(window).width() <= 750 ? '95%' : '860px'
-                });
-            }
             if (layEvent === 'del') {
                 febs.modal.confirm('删除用户', '确定删除该用户？', function () {
                     deleteUsers(data.id);
-                });
-            }
-            if (layEvent === 'edit') {
-                febs.modal.open('修改班组', 'system/team/update/' + data.id, {
-                    area: $(window).width() <= 750 ? '90%' : '50%',
-                    btn: ['提交', '取消'],
-                    yes: function (index, layero) {
-                        $('#user-update').find('#submit').trigger('click');
-                    },
-                    btn2: function () {
-                        layer.closeAll();
-                    }
                 });
             }
         });
@@ -207,14 +155,12 @@
             tableIns = febs.table.init({
                 elem: $view.find('table'),
                 id: 'userTable',
-                url: ctx + 'controller/team/searchAllTeam',
+                url: ctx + 'controller/attendanceMachine/getAllAttendanceMachine',
                 cols: [[
                     {type: 'checkbox'},
-                    {field: 'name', title: '班组名称', minWidth: 100},
-                    {field: 'punchTime', title: '打卡时间', minWidth: 100},
-                    {field: 'flexibleWorkTime', title: '弹性工作时间', minWidth: 100},
-                    {field: 'punchTime', title: '创建时间', minWidth: 180, sort: true},
-                    {title: '操作', toolbar: '#user-option', minWidth: 140}
+                    {field: 'mac', title: 'mac地址', minWidth: 100},
+                    {field: 'teamInfo', title: '所属班组', minWidth: 100},
+                    {title: '操作', toolbar: '#user-option', minWidth: 50}
                 ]]
             });
         }
@@ -234,19 +180,15 @@
         }
 
         function deleteUsers(userIds) {
-            var currentUserId = currentUser.userId + '';
-            if (('' + userIds).split(',').indexOf(currentUserId) !== -1) {
-                febs.alert.warn('所选用户包含当前登录用户，无法删除');
-                return;
-            }
+            console.log("查看删除前的数据id=",userIds);
             var arr = [];
             if (userIds.indexOf(",") != -1) {
-                 arr = userIds.split(',');
+                arr = userIds.split(',');
             }else{
                 arr.push(userIds)
             }
             console.log("查看删除的数据id=",arr);
-            febs.post(ctx + 'controller/team/deleteTeam?ids=' + arr, null, function () {
+            febs.post(ctx + 'controller/attendanceMachine/deleteMachine?ids=' + arr, null, function () {
                 febs.alert.success('删除用户成功');
                 $query.click();
             });

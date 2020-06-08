@@ -166,10 +166,24 @@ public class ViewController extends BaseController {
         return FebsUtil.view("others/team/teamDetalis");
     }
 
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/team/update/{id}")
+    @RequiresPermissions("user:view")
+    public String lxjTeamUpdate(@PathVariable String id, Model model) {
+        model.addAttribute("id", id);
+        return FebsUtil.view("others/team/updateTeam");
+    }
+
+
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/team/add")
     @RequiresPermissions("user:view")
     public String lxjTeamAdd() {
         return FebsUtil.view("others/team/addTeam");
+    }
+
+    @GetMapping(FebsConstant.VIEW_PREFIX + "system/machine/add")
+    @RequiresPermissions("user:view")
+    public String lxjMachineAdd() {
+        return FebsUtil.view("others/machine/addMachine");
     }
     //    xsheng添加 end
     private void resolveUserModel(String username, Model model, Boolean transform) {

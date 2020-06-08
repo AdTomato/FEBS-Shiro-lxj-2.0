@@ -105,4 +105,40 @@ public class ViewController {
     public String team() {
         return FebsUtil.view("others/team/team");
     }
+
+    /***
+     * 考勤机管理
+     */
+    @GetMapping("machine")
+    @RequiresPermissions("machine:view")
+    public String machine() {
+        return FebsUtil.view("others/machine/machine");
+    }
+
+    /***
+     * 人员每日考勤时长
+     */
+    @GetMapping("attendanceTime")
+    @RequiresPermissions("time:view")
+    public String statis() {
+        return FebsUtil.view("others/time/attend");
+    }
+
+    /***
+     * 人员每日考勤明细
+     */
+    @GetMapping("attendanceDetails")
+    @RequiresPermissions("time:view")
+    public String details() {
+        return FebsUtil.view("others/time/attendsDetails");
+    }
+
+    /***
+     * 考勤明细
+     */
+    @GetMapping("details")
+    @RequiresPermissions("time:view")
+    public String attDetails() {
+        return FebsUtil.view("others/time/details");
+    }
 }

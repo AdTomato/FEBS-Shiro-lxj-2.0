@@ -54,13 +54,16 @@
         });
 
         function initTable(id) {
+            console.log("直接获取id=",id)
             $.ajax({
                 type: "get",
                 dataType: "json",
                 url: ctx + 'controller/team/searchMachineInTeamInfo?id='+id,
                 data: "",
                 success: function (data) {
-                    if (data.data.length != 0) {
+                    console.log("返回的结果数据=",data);
+                    debugger;
+                    if (data.code!=500&&data.data.length != 0) {
                         var html = "";
                         var arr = data.data;
                         $("#count").html(arr.length);

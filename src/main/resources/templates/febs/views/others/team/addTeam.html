@@ -13,18 +13,36 @@
             <label class="layui-form-label febs-form-item-require">班组名称：</label>
             <div class="layui-input-block">
                 <input type="text" name="username" minlength="2" maxlength="10" lay-verify="range|username"
-                       autocomplete="off" class="layui-input">
+                       autocomplete="off" class="layui-input" value="测试班组">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label febs-form-item-require">考勤机：</label>
             <div class="layui-input-block">
                 <select name="roleId"
-                        lay-verify="required"
                         xm-select-direction="down"
                         xm-select="user-add-role"
                         xm-select-skin="default">
                 </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">打卡时间：</label>
+            <div class="layui-input-block">
+                <div class="layui-input-inline">
+                    <input type="text" name="date" id="febs-form-group-date"
+                           placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">工作时间：</label>
+            <div class="layui-input-block">
+                <div class="layui-input-inline">
+                    <input type="text" name="time" autocomplete="off" class="layui-input" value="9">
+                </div>
             </div>
         </div>
         <div class="layui-form-item febs-hide">
@@ -35,9 +53,11 @@
 </div>
 
 <script>
+    var result = {};
     layui.use(['febs', 'form', 'formSelects', 'validate', 'treeSelect'], function () {
         var $ = layui.$,
             febs = layui.febs,
+            laydate = layui.laydate,
             layer = layui.layer,
             formSelects = layui.formSelects,
             form = layui.form,
@@ -46,11 +66,15 @@
 
         form.verify(validate);
         form.render();
+        laydate.render({
+            elem: '#febs-form-group-date',
+            type: 'datetime'
+        });
 
         formSelects.render();
 
         formSelects.config('user-add-role', {
-            searchUrl: ctx + 'role',
+            searchUrl: ctx + 'controller/attendanceMachine/getAllMachines',
             response: {
                 statusCode: 200
             },
@@ -59,8 +83,8 @@
                 var tranData = [];
                 for (var i = 0; i < data.length; i++) {
                     tranData.push({
-                        name: data[i].roleName,
-                        value: data[i].roleId
+                        name: data[i].mac,
+                        value: data[i].mac
                     })
                 }
                 result.data = tranData;
@@ -73,10 +97,26 @@
         });
 
         form.on('submit(user-add-form-submit)', function (data) {
-            febs.post(ctx + 'user', data.field, function () {
-                layer.closeAll();
-                febs.alert.success('新增用户成功，初始密码为 1234qwer');
-                $('#febs-user').find('#query').click();
+            console.log("封装前数据=",data);
+            var objs = {teamInfo:''};
+            var obj = {};
+            obj.name = data.field.username;
+            obj.punchTime = data.field.date;
+            obj.flexibleWorkTime = data.field.time;
+            objs.teamInfo = obj;
+            objs.macs = data.field.roleId;
+            console.log("封装数据=",objs);
+            result = objs;
+            $.ajax({
+                url:ctx + 'controller/team/addTeam',
+                type:"POST",
+                data:JSON.stringify(objs),
+                contentType:"application/json",  //缺失会出现URL编码，无法转成json对象
+                success:function(res){
+                    layer.closeAll();
+                    febs.alert.success('新增班组成功');
+                    $('#febs-user').find('#query').click();
+                }
             });
             return false;
         });
