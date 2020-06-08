@@ -36,15 +36,19 @@ public class AttendanceMachineController extends BaseController {
      * @return {@link FebsResponse}
      **/
     @GetMapping("/getAllMachines")
-    public FebsResponse getAllMachines (){
+    public FebsResponse getAllMachines (String status){
         List<AttendanceMachine> allMachine = attendanceMachineService.getAllMachine();
         List<AttendanceMachine> UnboundMachines = new ArrayList<>();
-        for (AttendanceMachine attendanceMachine : allMachine) {
-            if ("".equals(attendanceMachine.getTeamInfo())){
-                UnboundMachines.add(attendanceMachine);
+        if (status.equals("add")) {
+            for (AttendanceMachine attendanceMachine : allMachine) {
+                if ("".equals(attendanceMachine.getTeamInfo())) {
+                    UnboundMachines.add(attendanceMachine);
+                }
             }
+            return new FebsResponse().success().data(UnboundMachines);
+        }else {
+            return new FebsResponse().success().data(allMachine);
         }
-        return new FebsResponse().success().data(UnboundMachines);
     }
     /**
      * @author lfh
