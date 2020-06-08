@@ -26,7 +26,7 @@
     </update>
     <update id="updateMachineTeam">
         update sys_attendance_machine set team_info = #{teamId} where mac in
-        <foreach collection="list" separator="," open="(" close=")" index="index" item="mac">
+        <foreach collection="macList" separator="," open="(" close=")" item="mac" index="index" >
             #{mac}
         </foreach>
     </update>
