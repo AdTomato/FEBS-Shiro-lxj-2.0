@@ -70,7 +70,7 @@
         select * from sys_attendance_machine
     </select>
     <select id="getMachineByTeamId" resultType="string">
-        select mac from sys_attendance_machine where teamInfo = #{id}
+        select mac from sys_attendance_machine where team_info = #{id}
     </select>
 
 </mapper>
