@@ -6,6 +6,7 @@ import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.lxj.entity.AttendanceMachine;
+import cc.mrbird.febs.lxj.entity.TeamInfo;
 import cc.mrbird.febs.lxj.service.TeamService;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserService;
@@ -32,6 +33,7 @@ public class ViewController extends BaseController {
 
     private final IUserService userService;
     private final ShiroHelper shiroHelper;
+    private final TeamService teamService;
 
     @GetMapping("login")
     @ResponseBody
@@ -188,5 +190,15 @@ public class ViewController extends BaseController {
         if (user.getLastLoginTime() != null) {
             model.addAttribute("lastLoginTime", DateUtil.getDateFormat(user.getLastLoginTime(), DateUtil.FULL_TIME_SPLIT_PATTERN));
         }
+    }
+
+    @GetMapping("/findTeamInfoById")
+    public String findTeamInfoById(String id,Model model) throws Exception {
+        if (id == null || "".equals(id)){
+            throw new Exception("未传入id");
+        }
+        TeamInfo teamInfo = teamService.getTeamInfoById(id);
+        model.addAttribute("teamInfo",teamInfo);
+        return FebsUtil.view("others/team/updateTeam");
     }
 }
