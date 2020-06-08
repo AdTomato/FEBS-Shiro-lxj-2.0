@@ -40,7 +40,7 @@ public class AttendanceMachineController extends BaseController {
         List<AttendanceMachine> allMachine = attendanceMachineService.getAllMachine();
         List<AttendanceMachine> UnboundMachines = new ArrayList<>();
         for (AttendanceMachine attendanceMachine : allMachine) {
-            if (attendanceMachine.getTeamInfo() == null||"".equals(attendanceMachine.getTeamInfo())){
+            if ("".equals(attendanceMachine.getTeamInfo())){
                 UnboundMachines.add(attendanceMachine);
             }
         }
@@ -71,7 +71,7 @@ public class AttendanceMachineController extends BaseController {
      * @Description 添加考勤机
      * @Date 2020/5/18 15:55
      * @throws
-     * @param attendanceMachine
+     * @param mac
      * @return {@link Object}
      **/
     @PostMapping("/addMachine")
@@ -95,7 +95,7 @@ public class AttendanceMachineController extends BaseController {
      */
     @PostMapping("/updateMachine")
     public Object updateMachine(@RequestBody AttendanceMachine attendanceMachine){
-        if (attendanceMachine == null || "".equals(attendanceMachine)){
+        if (attendanceMachine == null || "".equals(attendanceMachine.getMac())){
             return new FebsResponse().fail().message("未传入考勤机信息");
         }
         try {

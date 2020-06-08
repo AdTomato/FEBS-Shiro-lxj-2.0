@@ -33,4 +33,6 @@ public interface AttendanceMachineService {
     void deleteMachineByMacs(List<String> deletedAttendance);
 
     void deleteMachineByTeamId(String teamId);
+
+    void updateMachineTeam(List<String> macList,String id);
 }

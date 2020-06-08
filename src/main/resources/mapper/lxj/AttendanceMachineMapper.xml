@@ -24,6 +24,12 @@
         </trim>
         where id = #{id}
     </update>
+    <update id="updateMachineTeam">
+        update sys_attendance_machine set team_info = #{teamId} where mac in
+        <foreach collection="list" separator="," open="(" close=")" index="index" item="mac">
+            #{mac}
+        </foreach>
+    </update>
     <!--删除考勤机-->
     <delete id="deleteMachine">
         delete from sys_attendance_machine where id in
@@ -47,7 +53,8 @@
         FROM sys_attendance_machine
         WHERE mac = #{mac}
     </select>
-    <select id="getAllMachine" parameterType="attendanceMachine" resultType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
+    <select id="getAllMachine" parameterType="attendanceMachine"
+            resultType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
         select * from sys_attendance_machine where 1=1
         <if test="attendanceMachine.mac != null and ''!= attendanceMachine.mac ">
             and mac = #{attendanceMachine.mac}

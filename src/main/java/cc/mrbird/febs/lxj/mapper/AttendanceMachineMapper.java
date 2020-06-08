@@ -43,4 +43,6 @@ public interface AttendanceMachineMapper {
     void deleteMachineByMacs(List<String> deletedAttendance);
 
     void deleteMachineByTeamId(String teamId);
+
+    void updateMachineTeam(@Param("macList") List<String> macList, @Param("teamId") String teamId);
 }

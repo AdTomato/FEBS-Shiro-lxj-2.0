@@ -97,7 +97,7 @@ public class TeamController extends BaseController {
         try {
             String teamId = teamService.getTeamIdByName(teamInfo.getName());
             if (teamId != null){
-                return new FebsResponse().fail().message("班组名已存在，请重新添加");
+                return new FebsResponse().fail().message("班组名已存在，请勿重新添加");
             }
             String id = UUID.randomUUID().toString().replace("-", "");
             teamInfo.setId(id);
@@ -110,8 +110,9 @@ public class TeamController extends BaseController {
             if (addTeamParams.getMacs().length() > 0) {
                 String[] macArray = addTeamParams.getMacs().split(",");
                 List<String> macList = Arrays.asList(macArray);
-
-                attendanceMachineService.addMachines(macList,id);
+                //给考勤机绑定班组信息
+                attendanceMachineService.updateMachineTeam(macList,id);
+                //attendanceMachineService.addMachines(macList,id);
             }
         } catch (Exception e) {
             e.printStackTrace();
