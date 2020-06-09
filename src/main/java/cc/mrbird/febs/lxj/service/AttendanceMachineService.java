@@ -35,4 +35,6 @@ public interface AttendanceMachineService {
     void deleteMachineByTeamId(String teamId);
 
     void updateMachineTeam(List<String> macList,String id);
+    //根据班组id跟新解除考勤机绑定
+    void updateMachineByTeamIds(List<String> ids);
 }

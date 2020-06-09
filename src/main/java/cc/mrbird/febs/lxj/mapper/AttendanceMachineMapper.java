@@ -5,6 +5,7 @@ import cc.mrbird.febs.lxj.entity.AttendanceMachine;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
+import org.thymeleaf.expression.Ids;
 
 import java.util.List;
 
@@ -45,4 +46,6 @@ public interface AttendanceMachineMapper {
     void deleteMachineByTeamId(String teamId);
 
     void updateMachineTeam(@Param("macList") List<String> macList, @Param("teamId") String teamId);
+
+    void updateMachineByTeamIds(@Param("ids") List<String> ids);
 }
