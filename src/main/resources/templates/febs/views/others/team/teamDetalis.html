@@ -62,13 +62,14 @@
                 data: "",
                 success: function (data) {
                     console.log("返回的结果数据=",data);
-                    debugger;
                     if (data.code!=500&&data.data.length != 0) {
                         var html = "";
                         var arr = data.data;
                         $("#count").html(arr.length);
+                        var n = 0;
                         for(var i=0;i<arr.length;i++){
-                            html += "<tr><td>"+i+"</td><td>"+arr[i].mac+"</td></tr>";
+                            n++;
+                            html += "<tr><td>"+n+"</td><td>"+arr[i].mac+"</td></tr>";
                         }
                         $("#tbody").append(html);
                     }

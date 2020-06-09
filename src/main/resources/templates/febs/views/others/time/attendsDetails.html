@@ -40,7 +40,11 @@
             laydate = layui.laydate,
             febs = layui.febs,
             form = layui.form,
+            table = layui.table,
+            treeSelect = layui.treeSelect,
+            dropdown = layui.dropdown,
             $view = $('#febs-user'),
+            $query = $view.find('#query'),
             $reset = $view.find('#reset'),
             $searchForm = $view.find('form'),
             sortObject = {field: 'createTime', type: null},
@@ -66,11 +70,22 @@
             tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
         });
 
+        table.on('sort(userTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
         function initTable() {
             tableIns = febs.table.init({
                 elem: $view.find('table'),
                 id: 'userTable',
-                method:'post',
+                method:'POST',
                 contentType : 'application/json',//添加这句话
                 url: ctx + 'controller/attendance/personalAttendanceDetail',
                 cols: [[
