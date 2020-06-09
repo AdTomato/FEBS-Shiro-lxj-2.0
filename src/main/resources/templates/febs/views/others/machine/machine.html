@@ -10,7 +10,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label layui-form-label-sm">mac地址</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="username" autocomplete="off" class="layui-input">
+                                            <input type="text" name="mac" autocomplete="off" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
@@ -174,7 +174,7 @@
             return {
                 createTimeFrom: createTimeFrom,
                 createTimeTo: createTimeTo,
-                username: $searchForm.find('input[name="username"]').val().trim(),
+                mac: $searchForm.find('input[name="mac"]').val().trim(),
                 invalidate_ie_cache: new Date()
             };
         }

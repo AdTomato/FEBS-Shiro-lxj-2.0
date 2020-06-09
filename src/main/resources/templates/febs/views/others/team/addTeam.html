@@ -13,7 +13,7 @@
             <label class="layui-form-label febs-form-item-require">班组名称：</label>
             <div class="layui-input-block">
                 <input type="text" name="username" minlength="2" maxlength="10" lay-verify="range|username"
-                       autocomplete="off" class="layui-input" value="测试班组">
+                       autocomplete="off" class="layui-input" value="">
             </div>
         </div>
         <div class="layui-form-item">
@@ -41,7 +41,7 @@
             <label class="layui-form-label febs-form-item-require">工作时间：</label>
             <div class="layui-input-block">
                 <div class="layui-input-inline">
-                    <input type="text" name="time" autocomplete="off" class="layui-input" value="9">
+                    <input type="text" name="time" autocomplete="off" class="layui-input" value="">
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
         formSelects.render();
 
         formSelects.config('user-add-role', {
-            searchUrl: ctx + 'controller/attendanceMachine/getAllMachines',
+            searchUrl: ctx + 'controller/attendanceMachine/getAllMachines?status=add',
             response: {
                 statusCode: 200
             },
@@ -92,12 +92,11 @@
             },
             error: function (id, url, searchVal, err) {
                 console.error(err);
-                febs.alert.error('获取角色列表失败');
+                febs.alert.error('获取班组列表失败');
             }
         });
 
         form.on('submit(user-add-form-submit)', function (data) {
-            console.log("封装前数据=",data);
             var objs = {teamInfo:''};
             var obj = {};
             obj.name = data.field.username;
@@ -105,7 +104,6 @@
             obj.flexibleWorkTime = data.field.time;
             objs.teamInfo = obj;
             objs.macs = data.field.roleId;
-            console.log("封装数据=",objs);
             result = objs;
             $.ajax({
                 url:ctx + 'controller/team/addTeam',

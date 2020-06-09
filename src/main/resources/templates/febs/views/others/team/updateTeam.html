@@ -2,13 +2,18 @@
     #user-update {
         padding: 20px 25px 25px 0;
     }
-
     #user-update .layui-treeSelect .ztree li a, .ztree li span {
         margin: 0 0 2px 3px !important;
     }
 </style>
 <div class="layui-fluid" id="user-update">
     <form class="layui-form" action="" lay-filter="user-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">班组id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${teamInfo.id}">
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label febs-form-item-require">班组名称：</label>
             <div class="layui-input-block">
@@ -69,12 +74,10 @@
 
         form.verify(validate);
         form.render();
-
         initUserValue();
-
         formSelects.render();
         formSelects.config('user-update-role', {
-            searchUrl: ctx + 'controller/attendanceMachine/getAllMachines',
+            searchUrl: ctx + 'controller/attendanceMachine/getAllMachines?status=update',
             response: {
                 statusCode: 200
             },
@@ -91,23 +94,21 @@
                 return result;
             },
             success: function () {
-
                 var s = machines.toString();  //把数组转换为字符串
-                console.log("返回数据machines=",s)
                 formSelects.value('user-update-role', s.split(','));
             },
             error: function (id, url, searchVal, err) {
                 console.error(err);
-                febs.alert.error('获取角色列表失败');
+                febs.alert.error('获取考勤机列表失败');
             }
         });
 
         function initUserValue() {
-            console.log("返回数据teamInfo=",teamInfo);
             form.val("user-update-form", {
                 "name": teamInfo.name,
                 "flexibleWorkTime": teamInfo.flexibleWorkTime,
-                "date": teamInfo.punchTime
+                "date": teamInfo.punchTime,
+                "id": teamInfo.id
             });
         }
 
@@ -116,10 +117,24 @@
                 febs.alert.warn('数据未作任何修改！');
                 return false;
             }
-            febs.post(ctx + 'user/update', data.field, function () {
-                layer.closeAll();
-                febs.alert.success(user.username + ' 用户数据修改成功');
-                $('#febs-user').find('#query').click();
+            var objs = {teamInfo:''};
+            var obj = {};
+            obj.id = data.field.id;
+            obj.name = data.field.name;
+            obj.punchTime = data.field.date;
+            obj.flexibleWorkTime = data.field.flexibleWorkTime;
+            objs.teamInfo = obj;
+            objs.macs = data.field.roleId;
+            $.ajax({
+                url:ctx + 'controller/team/updateTeam',
+                type:"POST",
+                data:JSON.stringify(objs),
+                contentType:"application/json",  //缺失会出现URL编码，无法转成json对象
+                success:function(res){
+                    layer.closeAll();
+                    febs.alert.success('修改班组成功');
+                    $('#febs-user').find('#query').click();
+                }
             });
             return false;
         });
