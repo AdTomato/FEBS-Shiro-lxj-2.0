@@ -26,8 +26,16 @@
     </update>
     <update id="updateMachineTeam">
         update sys_attendance_machine set team_info = #{teamId} where mac in
-        <foreach collection="macList" separator="," open="(" close=")" item="mac" index="index" >
+        <foreach collection="macList" separator="," open="(" close=")" item="mac" index="index">
             #{mac}
+        </foreach>
+    </update>
+    <!--根据班组id实现考勤机解绑-->
+    <update id="updateMachineByTeamIds">
+        update sys_attendance_machine set team_info = ''
+        where team_info in
+        <foreach collection="ids" separator="," open="(" close=")" item="id" index="index">
+            #{id}
         </foreach>
     </update>
     <!--删除考勤机-->

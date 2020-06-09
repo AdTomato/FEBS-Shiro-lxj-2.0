@@ -169,6 +169,8 @@ public class TeamController extends BaseController {
         }
         try {
             teamService.deleteTeam(ids);
+            //删除班组的时候实现考勤机解绑
+            attendanceMachineService.updateMachineByTeamIds(ids);
         } catch (Exception e) {
             e.printStackTrace();
             return new FebsResponse().fail().message("删除失败");

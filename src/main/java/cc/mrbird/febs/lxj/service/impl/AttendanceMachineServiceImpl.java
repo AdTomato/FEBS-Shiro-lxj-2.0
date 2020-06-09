@@ -102,4 +102,9 @@ public class AttendanceMachineServiceImpl implements AttendanceMachineService {
     public void updateMachineTeam(List<String> macList,String teamId) {
         attendanceMachineMapper.updateMachineTeam(macList,teamId);
     }
+
+    @Override
+    public void updateMachineByTeamIds(List<String> ids) {
+        attendanceMachineMapper.updateMachineByTeamIds(ids);
+    }
 }
