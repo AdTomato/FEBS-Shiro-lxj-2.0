@@ -164,14 +164,14 @@ public class ViewController extends BaseController {
 
     //    xsheng添加 strat
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/team/detail/{id}")
-    @RequiresPermissions("user:view")
+    @RequiresPermissions("team:view")
     public String lxjTeamDetail(@PathVariable String id, Model model) {
         model.addAttribute("id", id);
         return FebsUtil.view("others/team/teamDetalis");
     }
 
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/team/update/{id}")
-    @RequiresPermissions("user:view")
+    @RequiresPermissions("team:update")
     public String lxjTeamUpdate(@PathVariable String id, Model model) throws Exception {
         if (id == null || "".equals(id)){
             throw new Exception("未传入id");
@@ -185,13 +185,13 @@ public class ViewController extends BaseController {
 
 
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/team/add")
-    @RequiresPermissions("user:view")
+    @RequiresPermissions("team:add")
     public String lxjTeamAdd() {
         return FebsUtil.view("others/team/addTeam");
     }
 
     @GetMapping(FebsConstant.VIEW_PREFIX + "system/machine/add")
-    @RequiresPermissions("user:view")
+    @RequiresPermissions("machine:add")
     public String lxjMachineAdd() {
         return FebsUtil.view("others/machine/addMachine");
     }

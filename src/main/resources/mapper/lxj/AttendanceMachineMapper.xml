@@ -77,6 +77,7 @@
     <select id="getMachines" resultType="cc.mrbird.febs.lxj.entity.AttendanceMachine">
         select * from sys_attendance_machine
     </select>
+    <!--根据班组id查考勤机的mac-->
     <select id="getMachineByTeamId" resultType="string">
         select mac from sys_attendance_machine where team_info = #{id}
     </select>
