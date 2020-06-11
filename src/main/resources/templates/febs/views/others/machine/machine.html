@@ -16,16 +16,19 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label layui-form-label-sm">创建时间</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="createTime" id="user-createTime" class="layui-input">
+                                            <input type="text" name="createTime" id="user-createTime"
+                                                   class="layui-input">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
-                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action" id="query">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="query">
                                     <i class="layui-icon">&#xe848;</i>
                                 </div>
-                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action" id="reset">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="reset">
                                     <i class="layui-icon">&#xe79b;</i>
                                 </div>
                                 <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more">
@@ -44,7 +47,8 @@
     <span shiro:lacksPermission="user:view,user:update,user:delete">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
-    <a lay-event="del" shiro:hasPermission="machine:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+    <a lay-event="del" shiro:hasPermission="machine:delete"><i
+            class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
 <script data-th-inline="none" type="text/javascript">
     layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'treeSelect'], function () {
@@ -98,7 +102,7 @@
                         febs.modal.confirm('删除用户', '确定删除该用户？', function () {
                             var userIds = [];
                             layui.each(checkStatus.data, function (key, item) {
-                                console.log("选择的数据=",item);
+                                console.log("选择的数据=", item);
                                 userIds.push(item.id)
                             });
                             deleteUsers(userIds.join(','));
@@ -180,14 +184,14 @@
         }
 
         function deleteUsers(userIds) {
-            console.log("查看删除前的数据id=",userIds);
+            console.log("查看删除前的数据id=", userIds);
             var arr = [];
             if (userIds.indexOf(",") != -1) {
                 arr = userIds.split(',');
-            }else{
+            } else {
                 arr.push(userIds)
             }
-            console.log("查看删除的数据id=",arr);
+            console.log("查看删除的数据id=", arr);
             febs.post(ctx + 'controller/attendanceMachine/deleteMachine?ids=' + arr, null, function () {
                 febs.alert.success('删除用户成功');
                 $query.click();
