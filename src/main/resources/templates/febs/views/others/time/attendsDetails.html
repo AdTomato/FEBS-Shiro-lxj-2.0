@@ -34,17 +34,22 @@
         </div>
     </div>
 </div>
+<script type="text/html" id="user-status">
+    {{#
+    var status = {
+    '正常': {title: '正常', color: 'green'},
+    '异常': {title: '异常', color: 'volcano'}
+    }[d.status];
+    }}
+    <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
+</script>
 <script data-th-inline="none" type="text/javascript">
     layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'treeSelect'], function () {
         var $ = layui.jquery,
             laydate = layui.laydate,
             febs = layui.febs,
             form = layui.form,
-            table = layui.table,
-            treeSelect = layui.treeSelect,
-            dropdown = layui.dropdown,
             $view = $('#febs-user'),
-            $query = $view.find('#query'),
             $reset = $view.find('#reset'),
             $searchForm = $view.find('form'),
             sortObject = {field: 'createTime', type: null},
@@ -69,24 +74,12 @@
             createTimeFrom = null;
             tableIns.reload({where: getQueryParams(), page: {curr: 1}, initSort: sortObject});
         });
-
-        table.on('sort(userTable)', function (obj) {
-            sortObject = obj;
-            tableIns.reload({
-                initSort: obj,
-                where: $.extend(getQueryParams(), {
-                    field: obj.field,
-                    order: obj.type
-                })
-            });
-        });
-
         function initTable() {
             tableIns = febs.table.init({
                 elem: $view.find('table'),
                 id: 'userTable',
-                method:'POST',
-                contentType : 'application/json',//添加这句话
+              /*  method:'post',
+                contentType : 'application/json',//添加这句话*/
                 url: ctx + 'controller/attendance/personalAttendanceDetail',
                 cols: [[
                     {field: 'name', title: '姓名', minWidth: 100},
@@ -95,7 +88,7 @@
                     {field: 'startTime', title: '开始时间', minWidth: 120},
                     {field: 'endTime', title: '结束时间', minWidth: 120},
                     {field: 'duration', title: '时长', minWidth: 100},
-                    {field: 'status', title: '状态', minWidth: 50}
+                    {title: '状态', templet: '#user-status'},
                 ]]
             });
         }

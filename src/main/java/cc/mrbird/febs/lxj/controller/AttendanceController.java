@@ -57,8 +57,8 @@ public class AttendanceController extends BaseController {
      * @param request
      * @return {@link FebsResponse}
      **/
-    @PostMapping("/attendanceDetailList")
-    public FebsResponse attendanceDetailList(@RequestBody(required = false) AttendanceDetailParams attendanceDetailParams, QueryRequest request){
+    @GetMapping("/attendanceDetailList")
+    public FebsResponse attendanceDetailList(AttendanceDetailParams attendanceDetailParams, QueryRequest request){
         Map<String,Object> dataTable  = getDataTable(attendanceService.getAttendanceDetailList(attendanceDetailParams,request));
         return new FebsResponse().success().data(dataTable);
     }
@@ -71,13 +71,13 @@ public class AttendanceController extends BaseController {
      * @param request
      * @return {@link FebsResponse}
      **/
-    @PostMapping("/personalAttendance")
-    public FebsResponse personalAttendance(@RequestBody(required = false) AttendanceDetailParams attendanceDetailParams, QueryRequest request){
+    @GetMapping("/personalAttendance")
+    public FebsResponse personalAttendance(AttendanceDetailParams attendanceDetailParams, QueryRequest request){
         Map<String,Object> dataTable  = getDataTable(attendanceService.getPersonalAttendance(attendanceDetailParams,request));
         return new FebsResponse().success().data(dataTable);
     }
-    @PostMapping("/personalAttendanceDetail")
-    public FebsResponse personalAttendanceDetail(@RequestBody(required = false) AttendanceDetailParams attendanceDetailParams, QueryRequest request){
+    @GetMapping("/personalAttendanceDetail")
+    public FebsResponse personalAttendanceDetail(AttendanceDetailParams attendanceDetailParams,QueryRequest request){
         Map<String,Object> dataTable  = getDataTable(attendanceService.getPersonalAttendanceDetail(attendanceDetailParams,request));
         return new FebsResponse().success().data(dataTable);
     }

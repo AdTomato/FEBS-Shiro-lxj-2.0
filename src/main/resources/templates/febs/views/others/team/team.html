@@ -148,7 +148,6 @@
 
         table.on('sort(userTable)', function (obj) {
             sortObject = obj;
-            console.log("sort(userTable)==",sortObject);
             tableIns.reload({
                 initSort: obj,
                 where: $.extend(getQueryParams(), {

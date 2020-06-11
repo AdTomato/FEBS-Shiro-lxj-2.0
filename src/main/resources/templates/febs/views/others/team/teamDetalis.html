@@ -43,8 +43,6 @@
             form = layui.form;
         //调用参数
         var id=getQueryString("ids");
-        console.log("接收传递的id=",id)
-
         form.render();
         initTable($view[0].innerText);
         $query.on('click', function () {
@@ -54,14 +52,12 @@
         });
 
         function initTable(id) {
-            console.log("直接获取id=",id)
             $.ajax({
                 type: "get",
                 dataType: "json",
                 url: ctx + 'controller/team/searchMachineInTeamInfo?id='+id,
                 data: "",
                 success: function (data) {
-                    console.log("返回的结果数据=",data);
                     if (data.code!=500&&data.data.length != 0) {
                         var html = "";
                         var arr = data.data;

@@ -69,9 +69,9 @@
         function initTable() {
             tableIns = febs.table.init({
                 elem: $view.find('table'),
-                contentType : 'application/json',//添加这句话
+                // contentType : 'application/json',//添加这句话
                 id: 'userTable',
-                method:'post',
+                // method:'post',
                 url: ctx + 'controller/attendance/attendanceDetailList',
                 cols: [[
                     {field: 'name', title: '姓名', minWidth: 100},
