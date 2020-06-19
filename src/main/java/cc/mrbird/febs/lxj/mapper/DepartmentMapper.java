@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface DepartmentMapper {
 
-    List<OrgDepartment> getAllDepartments();
+    List<OrgDepartment>  getAllDepartments();
 
     /**
      * 批量插入部门
