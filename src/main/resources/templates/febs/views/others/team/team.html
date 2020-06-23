@@ -40,7 +40,7 @@
         </div>
     </div>
 </div>
-<script type="text/html" id="user-option">
+<script type="text/html" id="team-option">
     <span shiro:lacksPermission="team:view,team:update,team:delete">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
@@ -185,7 +185,7 @@
                     {field: 'punchTime', title: '打卡时间', minWidth: 100},
                     {field: 'flexibleWorkTime', title: '弹性工作时间', minWidth: 100},
                     {field: 'punchTime', title: '创建时间', minWidth: 180, sort: true},
-                    {title: '操作', toolbar: '#user-option', minWidth: 140}
+                    {title: '操作', toolbar: '#team-option', minWidth: 140}
                 ]]
             });
         }

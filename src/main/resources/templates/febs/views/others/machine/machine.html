@@ -40,8 +40,8 @@
         </div>
     </div>
 </div>
-<script type="text/html" id="user-option">
-    <span shiro:lacksPermission="user:view,user:update,user:delete">
+<script type="text/html" id="machine-option">
+    <span shiro:lacksPermission="machine:view,machine:delete">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
     <a lay-event="del" shiro:hasPermission="machine:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
@@ -93,9 +93,9 @@
                 }
                 if (name === 'delete') {
                     if (!checkStatus.data.length) {
-                        febs.alert.warn('请选择需要删除的用户');
+                        febs.alert.warn('请选择需要删除的考勤机');
                     } else {
-                        febs.modal.confirm('删除用户', '确定删除该用户？', function () {
+                        febs.modal.confirm('删除考勤机', '确定删除该考勤机？', function () {
                             var userIds = [];
                             layui.each(checkStatus.data, function (key, item) {
                                 console.log("选择的数据=",item);
@@ -121,7 +121,7 @@
             var data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'del') {
-                febs.modal.confirm('删除用户', '确定删除该用户？', function () {
+                febs.modal.confirm('删除考勤机', '确定删除该考勤机？', function () {
                     deleteUsers(data.id);
                 });
             }
@@ -160,7 +160,7 @@
                     {type: 'checkbox'},
                     {field: 'mac', title: 'mac地址', minWidth: 100},
                     {field: 'teamInfo', title: '所属班组', minWidth: 100},
-                    {title: '操作', toolbar: '#user-option', minWidth: 50}
+                    {title: '操作', toolbar: '#machine-option', minWidth: 50}
                 ]]
             });
         }
@@ -180,16 +180,14 @@
         }
 
         function deleteUsers(userIds) {
-            console.log("查看删除前的数据id=",userIds);
             var arr = [];
             if (userIds.indexOf(",") != -1) {
                 arr = userIds.split(',');
             }else{
                 arr.push(userIds)
             }
-            console.log("查看删除的数据id=",arr);
             febs.post(ctx + 'controller/attendanceMachine/deleteMachine?ids=' + arr, null, function () {
-                febs.alert.success('删除用户成功');
+                febs.alert.success('删除考勤机成功');
                 $query.click();
             });
         }
