@@ -2,6 +2,7 @@ package cc.mrbird.febs.lxj.mapper;
 
 
 import cc.mrbird.febs.lxj.entity.OrgUser;
+import cc.mrbird.febs.system.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -66,4 +67,7 @@ public interface UserMapper {
      * @return {@link String}
      **/
     String getDeptId(String userId);
+
+    List<OrgUser> getUsers();
+
 }

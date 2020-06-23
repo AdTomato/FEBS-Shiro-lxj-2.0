@@ -202,12 +202,14 @@ public class OrganizationServiceImpl implements OrganizationService {
         List<OrgUser> updateUsers = new ArrayList<>();
         List<OrgUserDepartment> insertUserDepartments = new ArrayList<>();
         List<OrgUserDepartment> updateUserDepartment = new ArrayList<>();
+        List<String> sourceIds = new ArrayList<>();
         do {
             response = getSourceUser(sourceDepartmentId);
             if (response != null) {
                 List<OapiUserListbypageResponse.Userlist> userlist = response.getUserlist();
                 if (userlist != null && userlist.size() > 0) {
                     for (OapiUserListbypageResponse.Userlist user : userlist) {
+                        sourceIds.add(user.getUserid());
                         OrgUser orgUser = userSet(sourceDepartmentId, user);
                         String userId = userMapper.getIdBySourceId(orgUser.getSourceId());
                         if (!StringUtils.isEmpty(userId)) {
@@ -287,6 +289,14 @@ public class OrganizationServiceImpl implements OrganizationService {
                 } else {
                     userDepartmentMapper.updateUserDepartments(updateUserDepartment.subList(i * 1000, (i + 1) * 1000));
                 }
+            }
+        }
+        //获取全部系统用户表的数据
+        List<OrgUser> users = userMapper.getUsers();
+        for (OrgUser user : users) {
+            if (!sourceIds.contains(user.getSourceId())){
+                user.setIsShow(0);
+                userMapper.updateUser(user);
             }
         }
     }

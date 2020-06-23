@@ -234,5 +234,8 @@
     <select id="getDeptId" resultType="java.lang.String">
         select departmentId from org_user_department where userId = #{userId} limit 1
     </select>
+    <select id="getUsers" resultType="cc.mrbird.febs.lxj.entity.OrgUser">
+        select * from org_user
+    </select>
 
 </mapper>
