@@ -142,7 +142,7 @@
             var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
             tableIns.reload({where: params, page: {curr: 1}});
         });
-
+        //ces
         $reset.on('click', function () {
             $searchForm[0].reset();
             sortObject.type = 'null';
