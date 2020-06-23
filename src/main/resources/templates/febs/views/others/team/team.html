@@ -41,12 +41,14 @@
     </div>
 </div>
 <script type="text/html" id="user-option">
-    <span shiro:lacksPermission="user:view,user:update,user:delete">
+    <span shiro:lacksPermission="team:view,team:update,team:delete">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
     <a lay-event="detail"><i
             class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
-    <a lay-event="del" shiro:hasPermission="user:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+    <a lay-event="edit" shiro:hasPermission="team:update"><i
+            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+    <a lay-event="del" shiro:hasPermission="team:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
 <script data-th-inline="none" type="text/javascript">
     layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'treeSelect'], function () {
@@ -148,6 +150,7 @@
 
         table.on('sort(userTable)', function (obj) {
             sortObject = obj;
+            console.log("sort(userTable)==",sortObject);
             tableIns.reload({
                 initSort: obj,
                 where: $.extend(getQueryParams(), {
@@ -158,6 +161,7 @@
         });
 
         $query.on('click', function () {
+            console.log("sortObject==",sortObject);
             var params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
             tableIns.reload({where: params, page: {curr: 1}});
         });
