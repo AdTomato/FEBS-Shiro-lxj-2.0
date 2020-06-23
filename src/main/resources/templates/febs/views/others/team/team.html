@@ -1,9 +1,9 @@
-<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="班组管理">
+<div class="layui-fluid layui-anim febs-anim" id="febs-team" lay-title="班组管理">
     <div class="layui-row febs-container">
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body febs-table-full">
-                    <form class="layui-form layui-table-form" lay-filter="user-table-form">
+                    <form class="layui-form layui-table-form" lay-filter="team-table-form">
                         <div class="layui-row">
                             <div class="layui-col-md10">
                                 <div class="layui-form-item">
@@ -16,7 +16,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label layui-form-label-sm">创建时间</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="createTime" id="user-createTime" class="layui-input">
+                                            <input type="text" name="createTime" id="team-createTime" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </form>
-                    <table lay-filter="userTable" lay-data="{id: 'userTable'}"></table>
+                    <table lay-filter="teamTable" lay-data="{id: 'teamTable'}"></table>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
             table = layui.table,
             treeSelect = layui.treeSelect,
             dropdown = layui.dropdown,
-            $view = $('#febs-user'),
+            $view = $('#febs-team'),
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
             $searchForm = $view.find('form'),
@@ -73,7 +73,7 @@
         initTable();
 
         laydate.render({
-            elem: '#user-createTime',
+            elem: '#team-createTime',
             range: true,
             trigger: 'click'
         });
@@ -81,17 +81,17 @@
         dropdown.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
-                var checkStatus = table.checkStatus('userTable');
+                var checkStatus = table.checkStatus('teamTable');
                 if (name === 'add') {
                     febs.modal.open('新增班组', 'system/team/add', {
                         btn: ['提交', '重置'],
                         area: $(window).width() <= 750 ? '95%' : '50%',
                         yes: function (index, layero) {
-                            $('#user-add').find('#submit').trigger('click');
-                            $query.click();
+                            $('#team-add').find('#submit').trigger('click');
+                            $reset.click();
                         },
                         btn2: function () {
-                            $('#user-add').find('#reset').trigger('click');
+                            $('#team-add').find('#reset').trigger('click');
                             return false;
                         }
                     });
@@ -121,7 +121,7 @@
             }]
         });
 
-        table.on('tool(userTable)', function (obj) {
+        table.on('tool(teamTable)', function (obj) {
             var data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'detail') {
@@ -139,7 +139,7 @@
                     area: $(window).width() <= 750 ? '90%' : '50%',
                     btn: ['提交', '取消'],
                     yes: function (index, layero) {
-                        $('#user-update').find('#submit').trigger('click');
+                        $('#team-update').find('#submit').trigger('click');
                     },
                     btn2: function () {
                         layer.closeAll();
@@ -148,9 +148,8 @@
             }
         });
 
-        table.on('sort(userTable)', function (obj) {
+        table.on('sort(teamTable)', function (obj) {
             sortObject = obj;
-            console.log("sort(userTable)==",sortObject);
             tableIns.reload({
                 initSort: obj,
                 where: $.extend(getQueryParams(), {
@@ -177,7 +176,7 @@
         function initTable() {
             tableIns = febs.table.init({
                 elem: $view.find('table'),
-                id: 'userTable',
+                id: 'teamTable',
                 url: ctx + 'controller/team/searchAllTeam',
                 cols: [[
                     {type: 'checkbox'},

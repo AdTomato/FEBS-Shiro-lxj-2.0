@@ -1,9 +1,9 @@
-<div class="layui-fluid layui-anim febs-anim" id="febs-user" lay-title="考勤机管理">
+<div class="layui-fluid layui-anim febs-anim" id="febs-machine" lay-title="考勤机管理">
     <div class="layui-row febs-container">
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body febs-table-full">
-                    <form class="layui-form layui-table-form" lay-filter="user-table-form">
+                    <form class="layui-form layui-table-form" lay-filter="machine-table-form">
                         <div class="layui-row">
                             <div class="layui-col-md10">
                                 <div class="layui-form-item">
@@ -16,7 +16,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label layui-form-label-sm">创建时间</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="createTime" id="user-createTime" class="layui-input">
+                                            <input type="text" name="createTime" id="machine-createTime" class="layui-input">
                                         </div>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </form>
-                    <table lay-filter="userTable" lay-data="{id: 'userTable'}"></table>
+                    <table lay-filter="machineTable" lay-data="{id: 'machineTable'}"></table>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
             table = layui.table,
             treeSelect = layui.treeSelect,
             dropdown = layui.dropdown,
-            $view = $('#febs-user'),
+            $view = $('#febs-machine'),
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
             $searchForm = $view.find('form'),
@@ -69,7 +69,7 @@
         initTable();
 
         laydate.render({
-            elem: '#user-createTime',
+            elem: '#machine-createTime',
             range: true,
             trigger: 'click'
         });
@@ -77,16 +77,16 @@
         dropdown.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
-                var checkStatus = table.checkStatus('userTable');
+                var checkStatus = table.checkStatus('machineTable');
                 if (name === 'add') {
                     febs.modal.open('新增考勤机', 'system/machine/add', {
                         btn: ['提交', '重置'],
                         area: $(window).width() <= 750 ? '95%' : '50%',
                         yes: function (index, layero) {
-                            $('#user-add').find('#submit').trigger('click');
+                            $('#machine-add').find('#submit').trigger('click');
                         },
                         btn2: function () {
-                            $('#user-add').find('#reset').trigger('click');
+                            $('#machine-add').find('#reset').trigger('click');
                             return false;
                         }
                     });
@@ -109,15 +109,15 @@
             options: [{
                 name: 'add',
                 title: '新增考勤机',
-                perms: 'team:add'
+                perms: 'machine:add'
             }, {
                 name: 'delete',
                 title: '删除考勤机',
-                perms: 'team:delete'
+                perms: 'machine:delete'
             }]
         });
 
-        table.on('tool(userTable)', function (obj) {
+        table.on('tool(machineTable)', function (obj) {
             var data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'del') {
@@ -127,7 +127,7 @@
             }
         });
 
-        table.on('sort(userTable)', function (obj) {
+        table.on('sort(machineTable)', function (obj) {
             sortObject = obj;
             tableIns.reload({
                 initSort: obj,
@@ -154,7 +154,7 @@
         function initTable() {
             tableIns = febs.table.init({
                 elem: $view.find('table'),
-                id: 'userTable',
+                id: 'machineTable',
                 url: ctx + 'controller/attendanceMachine/getAllAttendanceMachine',
                 cols: [[
                     {type: 'checkbox'},
