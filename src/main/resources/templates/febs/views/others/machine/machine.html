@@ -77,7 +77,9 @@
         dropdown.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
+                debugger;
                 var checkStatus = table.checkStatus('machineTable');
+                debugger;
                 if (name === 'add') {
                     febs.modal.open('新增考勤机', 'system/machine/add', {
                         btn: ['提交', '重置'],

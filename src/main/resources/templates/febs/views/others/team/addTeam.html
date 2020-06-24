@@ -1,14 +1,14 @@
 <style>
-    #user-add {
+    #team-add {
         padding: 20px 25px 25px 0;
         height: 500px;
     }
-    #user-add .layui-treeSelect .ztree li a, .ztree li span {
+    #team-add .layui-treeSelect .ztree li a, .ztree li span {
         margin: 0 0 2px 3px !important;
     }
 </style>
-<div class="layui-fluid" id="user-add">
-    <form class="layui-form" action="" lay-filter="user-add-form">
+<div class="layui-fluid" id="team-add">
+    <form class="layui-form" action="" lay-filter="team-add-form">
         <div class="layui-form-item">
             <label class="layui-form-label febs-form-item-require">班组名称：</label>
             <div class="layui-input-block">
@@ -21,7 +21,7 @@
             <div class="layui-input-block">
                 <select name="roleId"
                         xm-select-direction="down"
-                        xm-select="user-add-role"
+                        xm-select="team-add-role"
                         xm-select-skin="default">
                 </select>
             </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="layui-form-item febs-hide">
-            <button class="layui-btn" lay-submit="" lay-filter="user-add-form-submit" id="submit"></button>
+            <button class="layui-btn" lay-submit="" lay-filter="team-add-form-submit" id="submit"></button>
             <button type="reset" class="layui-btn" id="reset"></button>
         </div>
     </form>
@@ -61,7 +61,7 @@
             layer = layui.layer,
             formSelects = layui.formSelects,
             form = layui.form,
-            $view = $('#user-add'),
+            $view = $('#team-add'),
             validate = layui.validate;
 
         form.verify(validate);
@@ -73,7 +73,7 @@
 
         formSelects.render();
 
-        formSelects.config('user-add-role', {
+        formSelects.config('team-add-role', {
             searchUrl: ctx + 'controller/attendanceMachine/getAllMachines?status=add',
             response: {
                 statusCode: 200
@@ -96,7 +96,7 @@
             }
         });
 
-        form.on('submit(user-add-form-submit)', function (data) {
+        form.on('submit(team-add-form-submit)', function (data) {
             var objs = {teamInfo:''};
             var obj = {};
             obj.name = data.field.username;
@@ -113,7 +113,7 @@
                 success:function(res){
                     layer.closeAll();
                     febs.alert.success('新增班组成功');
-                    $('#febs-user').find('#query').click();
+                    $('#febs-team').find('#query').click();
                 }
             });
             return false;

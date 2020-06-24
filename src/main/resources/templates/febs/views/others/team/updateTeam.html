@@ -1,13 +1,13 @@
 <style>
-    #user-update {
+    #team-update {
         padding: 20px 25px 25px 0;
     }
-    #user-update .layui-treeSelect .ztree li a, .ztree li span {
+    #team-update .layui-treeSelect .ztree li a, .ztree li span {
         margin: 0 0 2px 3px !important;
     }
 </style>
-<div class="layui-fluid" id="user-update">
-    <form class="layui-form" action="" lay-filter="user-update-form">
+<div class="layui-fluid" id="team-update">
+    <form class="layui-form" action="" lay-filter="team-update-form">
         <div class="layui-form-item febs-hide">
             <label class="layui-form-label febs-form-item-require">班组id：</label>
             <div class="layui-input-block">
@@ -28,7 +28,7 @@
                 <select name="roleId"
                         lay-verify="required"
                         xm-select-direction="down"
-                        xm-select="user-update-role"
+                        xm-select="team-update-role"
                         xm-select-skin="default">
                 </select>
             </div>
@@ -55,7 +55,7 @@
 
 
         <div class="layui-form-item febs-hide">
-            <button class="layui-btn" lay-submit="" lay-filter="user-update-form-submit" id="submit"></button>
+            <button class="layui-btn" lay-submit="" lay-filter="team-update-form-submit" id="submit"></button>
         </div>
     </form>
 </div>
@@ -69,14 +69,14 @@
             form = layui.form,
             teamInfo = [[${teamInfo}]],
             machines = [[${machines}]],
-            $view = $('#user-update'),
+            $view = $('#team-update'),
             validate = layui.validate;
 
         form.verify(validate);
         form.render();
         initUserValue();
         formSelects.render();
-        formSelects.config('user-update-role', {
+        formSelects.config('team-update-role', {
             searchUrl: ctx + 'controller/attendanceMachine/getAllMachines?status=update',
             response: {
                 statusCode: 200
@@ -95,7 +95,7 @@
             },
             success: function () {
                 var s = machines.toString();  //把数组转换为字符串
-                formSelects.value('user-update-role', s.split(','));
+                formSelects.value('team-update-role', s.split(','));
             },
             error: function (id, url, searchVal, err) {
                 console.error(err);
@@ -104,7 +104,7 @@
         });
 
         function initUserValue() {
-            form.val("user-update-form", {
+            form.val("team-update-form", {
                 "name": teamInfo.name,
                 "flexibleWorkTime": teamInfo.flexibleWorkTime,
                 "date": teamInfo.punchTime,
@@ -112,7 +112,7 @@
             });
         }
 
-        form.on('submit(user-update-form-submit)', function (data) {
+        form.on('submit(team-update-form-submit)', function (data) {
             if (febs.nativeEqual(data.field, teamInfo)) {
                 febs.alert.warn('数据未作任何修改！');
                 return false;
@@ -133,7 +133,7 @@
                 success:function(res){
                     layer.closeAll();
                     febs.alert.success('修改班组成功');
-                    $('#febs-user').find('#query').click();
+                    $('#febs-team').find('#query').click();
                 }
             });
             return false;
